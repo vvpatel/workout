@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Micro Reset - 30 Seconds</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Libre+Baskerville:wght@400&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -33,7 +33,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 30px;
+            padding: 40px 30px 30px 30px;
             background-image: 
                 radial-gradient(ellipse at top, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
                 radial-gradient(ellipse at bottom right, rgba(0, 150, 136, 0.05) 0%, transparent 50%);
@@ -270,10 +270,24 @@
         .hidden {
             display: none !important;
         }
+        
+        .quote-banner {
+            text-align: center;
+            font-family: 'Libre Baskerville', Georgia, serif;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="quote-banner" id="quoteBanner"></div>
+        
         <div class="header">
             <div class="badge">⚡ Micro Reset</div>
             <h1>30-Second Reset</h1>
@@ -302,12 +316,6 @@
             <button class="start-btn" style="margin-top: 15px;" onclick="repeatRoutine()">Repeat ↻</button>
         </div>
         
-        <div class="posture-alert">
-            <div class="posture-icon">👁️</div>
-            <div class="posture-text">
-                <strong>Screen Check:</strong> Eyes to CENTER of monitor, not lower-left!
-            </div>
-        </div>
         
         <div class="upcoming" id="upcomingList">
             <div class="upcoming-item next" data-step="1">
@@ -445,6 +453,41 @@
             currentStep = 0;
             startExercise();
         }
+        
+        const quotes = [
+            "We suffer more from imagination than from reality. — Seneca",
+            "We are what we think, having become what we thought.",
+            "Courage is not acting in the absence of fear, it's taking action in the face of fear.",
+            "He who has a why to live for can bear almost any how. — Nietzsche",
+            "The best thing and the worst thing are the same thing.",
+            "Inspiration is perishable—act on it immediately. — Naval",
+            "Be so good they can't ignore you. — Steve Martin",
+            "Screw it, let's do it. — Branson",
+            "You miss 100% of the shots you don't take. — Gretzky",
+            "Do, fail, learn.",
+            "Everything you want is on the other side of fear.",
+            "Wisdom is understanding the long-term consequences of your actions.",
+            "A problem well stated is a problem half solved. — Kettering",
+            "Curiosity is more important than knowledge. — Einstein",
+            "Excellence is the capacity to take pain. — Isadore Sharp",
+            "If you've got a good work ethic, it needs to be matched with a good rest ethic.",
+            "You have to throw out the good stuff to get the best stuff.",
+            "Imposter syndrome is proof that you are taking on new challenges.",
+            "If it makes you happy, it's not a waste of time.",
+            "The soul becomes dyed with the color of its thoughts. — Marcus Aurelius",
+            "Stay hungry, stay foolish. — Jobs",
+            "Simple can be harder than complex. — Jobs",
+            "Your time is limited. Don't waste it living someone else's life. — Jobs",
+            "Play long-term games with long-term people. — Naval",
+            "I'm not lazy, I'm on energy-saving mode.",
+            "The elevator to success is broken. Take the stairs.",
+            "If at first you don't succeed, redefine success.",
+            "Almost everything will work again if you unplug it for a few minutes—including you. — Anne Lamott",
+            "Tension is who you think you should be. Relaxation is who you are."
+        ];
+        
+        // Display random quote
+        document.getElementById('quoteBanner').textContent = quotes[Math.floor(Math.random() * quotes.length)];
         
         // Auto-start on page load
         window.addEventListener('load', () => {

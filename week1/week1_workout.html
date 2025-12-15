@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 1: Foundation - Workout Program</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #1a1a1a;
+      padding: 0.5in;
+      max-width: 8.5in;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #000;
+    }
+    
+    h2 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 16px;
+      margin-bottom: 8px;
+      padding: 6px 10px;
+      background: #1a1a1a;
+      color: white;
+      border-radius: 4px;
+    }
+    
+    h3 {
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 12px;
+      margin-bottom: 6px;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 2px;
+    }
+    
+    .meta {
+      color: #666;
+      margin-bottom: 8px;
+      font-size: 11px;
+    }
+    
+    .meta strong {
+      color: #333;
+    }
+    
+    .structure-table {
+      width: 100%;
+      margin-bottom: 12px;
+      font-size: 10px;
+    }
+    
+    .structure-table td {
+      padding: 3px 6px;
+      border: 1px solid #ddd;
+    }
+    
+    .structure-table td:first-child {
+      font-weight: 600;
+      width: 25%;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      font-size: 10px;
+    }
+    
+    th, td {
+      border: 1px solid #ccc;
+      padding: 4px 6px;
+      text-align: left;
+    }
+    
+    th {
+      background: #f5f5f5;
+      font-weight: 600;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    
+    .checkbox {
+      width: 40px;
+      text-align: center;
+    }
+    
+    .weight-col {
+      width: 60px;
+      background: #fffef0;
+    }
+    
+    .notes-col {
+      font-size: 9px;
+      color: #555;
+    }
+    
+    .day-header {
+      background: #2563eb !important;
+      color: white !important;
+    }
+    
+    .section-note {
+      font-size: 9px;
+      color: #666;
+      font-style: italic;
+      margin: 4px 0 8px 0;
+    }
+    
+    .important {
+      background: #fef3c7;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 10px;
+      margin: 8px 0;
+      border-left: 3px solid #f59e0b;
+    }
+    
+    .tracking-box {
+      border: 1px solid #ccc;
+      padding: 8px;
+      margin: 8px 0;
+      border-radius: 4px;
+      background: #fafafa;
+    }
+    
+    .tracking-box h4 {
+      font-size: 10px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    
+    .write-line {
+      border-bottom: 1px solid #ccc;
+      height: 20px;
+      margin: 4px 0;
+    }
+    
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .checklist li {
+      padding: 2px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    
+    .checklist li:before {
+      content: "☐";
+      position: absolute;
+      left: 0;
+    }
+    
+    .exercise-link {
+      color: #2563eb;
+      text-decoration: none;
+      border-bottom: 1px dotted #2563eb;
+    }
+    
+    .exercise-link:hover {
+      background: #eff6ff;
+    }
+    
+    .tips-section {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 8px;
+    }
+    
+    .tip-item {
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .tip-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .tip-item h4 {
+      font-size: 11px;
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 4px;
+    }
+    
+    .tip-item p {
+      font-size: 10px;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+    
+    .tip-item .video-link {
+      font-size: 9px;
+      color: #dc2626;
+      text-decoration: none;
+    }
+    
+    .tip-item .video-link:before {
+      content: "▶ ";
+    }
+    
+    .tip-item ul {
+      font-size: 9px;
+      margin-left: 14px;
+      color: #475569;
+    }
+    
+    .back-to-top {
+      font-size: 9px;
+      color: #6b7280;
+      text-decoration: none;
+    }
+    
+    .page-break {
+      page-break-before: always;
+    }
+    
+    @media print {
+      body {
+        padding: 0.25in;
+        font-size: 10px;
+      }
+      
+      h2 {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      
+      .day-header {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      
+      .no-print {
+        display: none;
+      }
+      
+      .exercise-link {
+        color: #000;
+        border-bottom: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>WEEK 1: FOUNDATION</h1>
+<p class="meta"><strong>Dates:</strong> _____________ to _____________ &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Phase:</strong> Establish baseline weights, perfect form, calf rehab begins</p>
+
+<table class="structure-table">
+  <tr>
+    <td><strong>Weekly Structure</strong></td>
+    <td>3 Strength (Mon/Wed/Thu) • 2 VO2 Max (Tue/Fri) • 3 Zone 2 (~150+ min) • 1 Recovery (Sun)</td>
+  </tr>
+</table>
+
+<h2>DAILY NON-NEGOTIABLES (~12 min)</h2>
+<p class="section-note">OFF days only (Tue/Fri/Sat/Sun mornings). On strength days (Mon/Wed/Thu), the workout covers these.</p>
+
+<h3>1. Movement (blood flow) - 3 min</h3>
+<table>
+  <tr><th>Exercise</th><th>Reps</th><th class="checkbox">Tue</th><th class="checkbox">Fri</th><th class="checkbox">Sat</th><th class="checkbox">Sun</th></tr>
+  <tr><td><a href="#tip-dead-bugs" class="exercise-link">Dead Bugs</a></td><td>25 each side</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+  <tr><td><a href="#tip-bird-dogs" class="exercise-link">Bird Dogs</a></td><td>25 each side</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+</table>
+
+<h3>2. Stability (core) - 1 min</h3>
+<table>
+  <tr><th>Exercise</th><th>Time</th><th class="checkbox">Tue</th><th class="checkbox">Fri</th><th class="checkbox">Sat</th><th class="checkbox">Sun</th></tr>
+  <tr><td><a href="#tip-side-plank" class="exercise-link">Side Plank RIGHT</a></td><td>30 sec</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+  <tr><td><a href="#tip-side-plank" class="exercise-link">Side Plank LEFT</a></td><td>30 sec</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+</table>
+
+<h3>3. Activation (glutes, lower traps, serratus) - 4 min</h3>
+<table>
+  <tr><th>Exercise</th><th>Reps</th><th class="checkbox">Tue</th><th class="checkbox">Fri</th><th class="checkbox">Sat</th><th class="checkbox">Sun</th></tr>
+  <tr><td><a href="#tip-clamshells" class="exercise-link">Clamshells (banded)</a></td><td>12 R, 15 L</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+  <tr><td><a href="#tip-leg-raise" class="exercise-link">Side-Lying Leg Raise</a></td><td>12 R, 15 L</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+  <tr><td><a href="#tip-chin-tuck" class="exercise-link">Chin Tuck + Hold</a></td><td>10 x 5 sec</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+  <tr><td><a href="#tip-prone-w" class="exercise-link">Prone W's (lower traps)</a></td><td>12</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+  <tr><td><a href="#tip-wall-slides" class="exercise-link">Wall Slides (serratus)</a></td><td>10</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+  <tr><td><a href="#tip-heel-drops" class="exercise-link">Eccentric Heel Drops</a></td><td>15 each</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+  <tr><td><a href="#tip-tibialis" class="exercise-link">Tibialis Raises</a></td><td>15</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+</table>
+
+<h3>4. Stretches + Foam Roll - 4 min</h3>
+<table>
+  <tr><th>Exercise</th><th>Time</th><th class="checkbox">Tue</th><th class="checkbox">Fri</th><th class="checkbox">Sat</th><th class="checkbox">Sun</th></tr>
+  <tr><td><a href="#tip-levator-stretch" class="exercise-link">Levator Scap Stretch</a></td><td>30s each side</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+  <tr><td><a href="#tip-calf-stretch" class="exercise-link">Slant Board Calf Stretch</a></td><td>1 min</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+  <tr><td><a href="#tip-foam-roll-it" class="exercise-link">Foam Roll IT Band</a></td><td>1 min R, 2 min L</td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td><td class="checkbox"></td></tr>
+</table>
+
+<div class="important">
+  <strong>Hourly Posture Reset (every day):</strong> Ears over shoulders, chin tucked, shoulders down & back
+</div>
+
+<!-- MONDAY -->
+<h2 class="day-header">MONDAY - Strength A + Zone 2 (90 min)</h2>
+
+<h3>Warm-Up (8 min)</h3>
+<ul class="checklist">
+  <li>5 min assault bike (easy)</li>
+  <li>Dynamic stretches, leg swings</li>
+  <li>Banded Clamshells: 10 R, 15 L</li>
+</ul>
+
+<h3>Calf Circuit (10 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-seated-calf" class="exercise-link">Seated Calf Raise</a></td><td>3 x 15</td><td class="weight-col"></td><td class="notes-col">Slow 3 sec eccentric</td></tr>
+  <tr><td><a href="#tip-standing-calf" class="exercise-link">Smith Standing Calf</a></td><td>3 x 12</td><td class="weight-col"></td><td class="notes-col">Full range of motion</td></tr>
+  <tr><td><a href="#tip-heel-drops" class="exercise-link">Single-Leg Eccentric Drops</a></td><td>2 x 10 each</td><td class="weight-col">BW</td><td class="notes-col">3 sec lower, step up</td></tr>
+</table>
+
+<h3>Glute Focus (10 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-hip-thrust" class="exercise-link">Barbell Hip Thrust</a></td><td>3 x 10</td><td class="weight-col"></td><td class="notes-col">Squeeze at top, 2 sec hold</td></tr>
+  <tr><td><a href="#tip-cable-kickback" class="exercise-link">Cable Kickback</a></td><td>2 x 12 each</td><td class="weight-col"></td><td class="notes-col">Use ankle strap</td></tr>
+</table>
+
+<h3>Main Lifts - Push/Quad (20 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-leg-press" class="exercise-link">Leg Press</a></td><td>3 x 10</td><td class="weight-col"></td><td class="notes-col"></td></tr>
+  <tr><td><a href="#tip-db-bench" class="exercise-link">DB Bench Press</a></td><td>3 x 10</td><td class="weight-col"></td><td class="notes-col"></td></tr>
+  <tr><td><a href="#tip-split-squat" class="exercise-link">Split Squat</a></td><td>3 x 10 each</td><td class="weight-col"></td><td class="notes-col">Rear foot on floor, knee over ankle</td></tr>
+</table>
+
+<h3>PT + Neck/Shoulder Health (12 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-lat-pulldown" class="exercise-link">Lat Pulldown</a></td><td>3 x 12</td><td class="weight-col"></td><td class="notes-col"><strong>Depress shoulders DOWN first</strong></td></tr>
+  <tr><td><a href="#tip-cable-row" class="exercise-link">Seated Cable Row</a></td><td>3 x 12</td><td class="weight-col"></td><td class="notes-col"><strong>Retract + depress</strong> scaps, hold 2s</td></tr>
+  <tr><td><a href="#tip-ext-rotation" class="exercise-link">Cable External Rotation</a></td><td>2 x 15 each</td><td class="weight-col"></td><td class="notes-col">Elbow at side</td></tr>
+  <tr><td><a href="#tip-scap-pushup" class="exercise-link">Scapular Push-Up</a></td><td>2 x 12</td><td class="weight-col">BW</td><td class="notes-col">Arms straight, just protract</td></tr>
+  <tr><td><a href="#tip-chin-tuck" class="exercise-link">Chin Tuck w/ Resistance</a></td><td>2 x 10</td><td class="weight-col">Hand</td><td class="notes-col">Push head back, hold 5 sec</td></tr>
+  <tr><td><a href="#tip-face-pulls" class="exercise-link">Face Pulls → Ext Rotation</a></td><td>2 x 12</td><td class="weight-col"></td><td class="notes-col"><strong>Squeeze lower traps</strong></td></tr>
+</table>
+
+<h3>Zone 2 Cardio (30 min) - AFTER STRENGTH</h3>
+<p class="section-note">Target HR: 120-140 bpm (conversational)</p>
+<table>
+  <tr><td style="width:30%">Activity:</td><td>☐ Peloton &nbsp; ☐ Stationary bike &nbsp; ☐ Hydrow</td></tr>
+  <tr><td>Duration:</td><td>30 min</td></tr>
+  <tr><td>Avg HR:</td><td></td></tr>
+</table>
+<p><strong>Notes:</strong> <span class="write-line" style="display:inline-block;width:80%"></span></p>
+
+<!-- TUESDAY -->
+<h2 class="day-header page-break">TUESDAY - VO2 Max (45 min)</h2>
+
+<h3>Protocol: 4x4 Intervals (Assault Bike)</h3>
+<table>
+  <tr><th>Phase</th><th>Duration</th><th>Intensity</th></tr>
+  <tr><td>Warm-Up</td><td>8 min</td><td>Easy spin, HR &lt; 120</td></tr>
+  <tr><td><strong>Interval 1</strong></td><td>4 min</td><td>85-95% max HR (ALL OUT)</td></tr>
+  <tr><td>Recovery</td><td>3 min</td><td>Easy spin</td></tr>
+  <tr><td><strong>Interval 2</strong></td><td>4 min</td><td>85-95% max HR</td></tr>
+  <tr><td>Recovery</td><td>3 min</td><td>Easy spin</td></tr>
+  <tr><td><strong>Interval 3</strong></td><td>4 min</td><td>85-95% max HR</td></tr>
+  <tr><td>Recovery</td><td>3 min</td><td>Easy spin</td></tr>
+  <tr><td><strong>Interval 4</strong></td><td>4 min</td><td>85-95% max HR</td></tr>
+  <tr><td>Cool-Down</td><td>5 min</td><td>Easy spin</td></tr>
+</table>
+
+<div class="tracking-box">
+  <h4>Tracking</h4>
+  <table>
+    <tr><td>Total Calories:</td><td style="width:100px"></td><td>Peak HR:</td><td style="width:100px"></td></tr>
+    <tr><td>Avg Interval HR:</td><td></td><td>RPE (1-10):</td><td></td></tr>
+  </table>
+</div>
+
+<p><strong>Notes:</strong> <span class="write-line" style="display:inline-block;width:80%"></span></p>
+
+<!-- WEDNESDAY -->
+<h2 class="day-header">WEDNESDAY - Strength B + Zone 2 (90 min)</h2>
+
+<h3>Warm-Up (8 min)</h3>
+<ul class="checklist">
+  <li>5 min assault bike (easy)</li>
+  <li>Hip circles, leg swings, ankle mobility</li>
+  <li>Banded Clamshells: 10 R, 15 L</li>
+</ul>
+
+<h3>Calf Circuit (10 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-seated-calf" class="exercise-link">Seated Calf Raise</a></td><td>3 x 15</td><td class="weight-col"></td><td class="notes-col">Same as Monday</td></tr>
+  <tr><td><a href="#tip-standing-calf" class="exercise-link">Smith Standing Calf</a></td><td>3 x 12</td><td class="weight-col"></td><td class="notes-col"></td></tr>
+  <tr><td><a href="#tip-heel-drops" class="exercise-link">Single-Leg Eccentric Drops</a></td><td>2 x 10 each</td><td class="weight-col">BW</td><td class="notes-col"></td></tr>
+</table>
+
+<h3>Glute + Posterior Chain (12 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-rdl" class="exercise-link">Romanian Deadlift</a></td><td>3 x 10</td><td class="weight-col"></td><td class="notes-col">Feel hamstrings stretch</td></tr>
+  <tr><td><a href="#tip-ghd" class="exercise-link">GHD Back Extension</a></td><td>3 x 10</td><td class="weight-col">BW</td><td class="notes-col">Squeeze glutes at top</td></tr>
+  <tr><td><a href="#tip-glute-bridge" class="exercise-link">Single-Leg Glute Bridge</a></td><td>2 x 10 each</td><td class="weight-col">BW</td><td class="notes-col">Hold 2 sec at top</td></tr>
+</table>
+
+<h3>Main Lifts - Pull/Hinge (18 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-cable-row" class="exercise-link">Cable Row</a></td><td>3 x 12</td><td class="weight-col"></td><td class="notes-col"><strong>Retract + depress</strong> scaps</td></tr>
+  <tr><td><a href="#tip-lat-pulldown" class="exercise-link">Lat Pulldown (close grip)</a></td><td>3 x 12</td><td class="weight-col"></td><td class="notes-col"><strong>Shoulders DOWN</strong></td></tr>
+  <tr><td><a href="#tip-leg-curl" class="exercise-link">Prone Leg Curl</a></td><td>3 x 12</td><td class="weight-col"></td><td class="notes-col"></td></tr>
+  <tr><td><a href="#tip-face-pulls" class="exercise-link">Face Pulls → Ext Rotation</a></td><td>3 x 15</td><td class="weight-col"></td><td class="notes-col"><strong>Lower trap focus</strong></td></tr>
+</table>
+
+<h3>Cutting Sport Prep + IT Band (12 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-hip-machine" class="exercise-link">Hip Adductor Machine</a></td><td>3 x 12</td><td class="weight-col"></td><td class="notes-col">Inner thigh</td></tr>
+  <tr><td><a href="#tip-hip-machine" class="exercise-link">Hip Abductor Machine</a></td><td>3 x 12</td><td class="weight-col"></td><td class="notes-col">Outer thigh</td></tr>
+  <tr><td><a href="#tip-band-walks" class="exercise-link">Lateral Band Walks</a></td><td>2 x 15 each way</td><td class="weight-col">Band</td><td class="notes-col">Stay low</td></tr>
+  <tr><td><a href="#tip-cable-kickback" class="exercise-link">Cable Hip Abduction</a></td><td>2 x 12 R, 15 L</td><td class="weight-col"></td><td class="notes-col">Ankle strap</td></tr>
+  <tr><td><a href="#tip-bosu" class="exercise-link">Single-Leg Bosu Balance</a></td><td>30 sec each</td><td class="weight-col">BW</td><td class="notes-col">Eyes forward</td></tr>
+</table>
+
+<h3>Zone 2 Cardio (30 min) - AFTER STRENGTH</h3>
+<p class="section-note">Target HR: 120-140 bpm</p>
+<table>
+  <tr><td style="width:30%">Activity:</td><td>☐ Pool &nbsp; ☐ Outdoor bike &nbsp; ☐ Peloton</td></tr>
+  <tr><td>Duration:</td><td>30 min</td></tr>
+  <tr><td>Avg HR:</td><td></td></tr>
+</table>
+
+<!-- THURSDAY -->
+<h2 class="day-header page-break">THURSDAY - Strength C: Movement + Stability (50-60 min)</h2>
+<p class="section-note">Lighter day - focus on movement quality, stability, and areas needing extra work</p>
+
+<h3>Warm-Up (8 min)</h3>
+<ul class="checklist">
+  <li>5 min easy bike or rowing</li>
+  <li>Dynamic stretches</li>
+  <li>Banded Clamshells: 10 R, 15 L</li>
+</ul>
+
+<h3>Calf Maintenance (8 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-seated-calf" class="exercise-link">Seated Calf Raise</a></td><td>2 x 15</td><td class="weight-col"></td><td class="notes-col">Lighter than Mon/Wed</td></tr>
+  <tr><td><a href="#tip-heel-drops" class="exercise-link">Single-Leg Eccentric Drops</a></td><td>2 x 12 each</td><td class="weight-col">BW</td><td class="notes-col">Focus on control</td></tr>
+</table>
+
+<h3>Full Body Circuit (25 min)</h3>
+<p class="section-note">Lighter weights, focus on form and muscle connection</p>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-goblet-squat" class="exercise-link">Goblet Squat</a></td><td>3 x 12</td><td class="weight-col"></td><td class="notes-col">Deep, controlled</td></tr>
+  <tr><td><a href="#tip-db-row" class="exercise-link">DB Row (single arm)</a></td><td>3 x 10 each</td><td class="weight-col"></td><td class="notes-col">Squeeze at top</td></tr>
+  <tr><td><a href="#tip-step-ups" class="exercise-link">Step-Ups (forward)</a></td><td>2 x 10 each</td><td class="weight-col">BW</td><td class="notes-col">Drive through heel</td></tr>
+  <tr><td><a href="#tip-step-ups" class="exercise-link">Lateral Step-Ups</a></td><td>2 x 10 each</td><td class="weight-col">BW</td><td class="notes-col">Control descent</td></tr>
+  <tr><td><a href="#tip-pushup" class="exercise-link">Push-Up or Incline Push-Up</a></td><td>2 x 12</td><td class="weight-col">BW</td><td class="notes-col">Below shoulder height</td></tr>
+  <tr><td><a href="#tip-trx-row" class="exercise-link">TRX Row</a></td><td>2 x 12</td><td class="weight-col">BW</td><td class="notes-col"><strong>Depress shoulders</strong></td></tr>
+</table>
+
+<h3>Stability + Balance (10 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-single-leg-rdl" class="exercise-link">Single-Leg RDL</a></td><td>2 x 8 each</td><td class="weight-col">Light DB</td><td class="notes-col">Balance challenge</td></tr>
+  <tr><td><a href="#tip-bosu" class="exercise-link">Bosu Squat</a></td><td>2 x 10</td><td class="weight-col">BW</td><td class="notes-col">Stability focus</td></tr>
+  <tr><td><a href="#tip-farmer-carry" class="exercise-link">Farmer Carry</a></td><td>2 x 40 yds</td><td class="weight-col"></td><td class="notes-col">Shoulders DOWN</td></tr>
+  <tr><td>Single-Leg Balance (eyes closed)</td><td>30 sec each</td><td class="weight-col">—</td><td class="notes-col">Ankle stability</td></tr>
+</table>
+
+<h3>Shoulder/Neck Health (8 min)</h3>
+<table>
+  <tr><th>Exercise</th><th>Sets x Reps</th><th class="weight-col">Weight</th><th class="notes-col">Notes</th></tr>
+  <tr><td><a href="#tip-prone-w" class="exercise-link">Prone I-T-W (bench)</a></td><td>2 x 8 each</td><td class="weight-col">3 lb</td><td class="notes-col"><strong>Lower trap squeeze</strong></td></tr>
+  <tr><td><a href="#tip-wall-slides" class="exercise-link">Wall Slides (serratus)</a></td><td>2 x 10</td><td class="weight-col">BW</td><td class="notes-col">Forearms on wall</td></tr>
+  <tr><td><a href="#tip-chin-tuck" class="exercise-link">Chin Tuck w/ Resistance</a></td><td>2 x 10</td><td class="weight-col">Hand</td><td class="notes-col">Deep neck flexors</td></tr>
+  <tr><td><a href="#tip-levator-stretch" class="exercise-link">Levator Scap Stretch</a></td><td>30 sec each</td><td class="weight-col">—</td><td class="notes-col">Ear → nose to armpit</td></tr>
+</table>
+
+<!-- FRIDAY -->
+<h2 class="day-header">FRIDAY - VO2 Max (45 min)</h2>
+
+<h3>Protocol: 4x4 Intervals (same as Tuesday)</h3>
+<table>
+  <tr><th>Phase</th><th>Duration</th><th>Intensity</th></tr>
+  <tr><td>Warm-Up</td><td>8 min</td><td>Easy spin</td></tr>
+  <tr><td><strong>Intervals 1-4</strong></td><td>4 min each</td><td>ALL OUT / 3 min recovery between</td></tr>
+  <tr><td>Cool-Down</td><td>5 min</td><td>Easy spin</td></tr>
+</table>
+
+<div class="tracking-box">
+  <h4>Tracking</h4>
+  <table>
+    <tr><td>Total Calories:</td><td style="width:100px"></td><td>Peak HR:</td><td style="width:100px"></td></tr>
+    <tr><td>Avg Interval HR:</td><td></td><td>RPE (1-10):</td><td></td></tr>
+  </table>
+  <p style="margin-top:6px"><strong>vs Tuesday:</strong> ☐ Better &nbsp; ☐ Same &nbsp; ☐ Worse</p>
+</div>
+
+<!-- SATURDAY -->
+<h2 class="day-header">SATURDAY - Long Zone 2 (60-90 min)</h2>
+<p class="section-note">Target HR: 120-140 bpm (conversational pace)</p>
+
+<table>
+  <tr><td style="width:30%">Activity:</td><td>☐ Outdoor Bike &nbsp; ☐ Hike &nbsp; ☐ Peloton &nbsp; ☐ Pool &nbsp; ☐ Stairs</td></tr>
+  <tr><td>Duration:</td><td></td></tr>
+  <tr><td>Avg HR:</td><td></td></tr>
+  <tr><td>Distance/Elevation:</td><td></td></tr>
+</table>
+
+<h3>Post-Cardio Mobility (15 min)</h3>
+<ul class="checklist">
+  <li>Foam roll calves: 2 min each</li>
+  <li>Foam roll quads: 2 min each</li>
+  <li>Foam roll IT band: 1 min R, 2 min L</li>
+  <li>Hip flexor stretch: 1 min each</li>
+  <li>Pigeon pose: 1 min R, 2 min L</li>
+</ul>
+
+<!-- SUNDAY -->
+<h2 class="day-header">SUNDAY - Active Recovery (30-45 min)</h2>
+
+<h3>Recovery Checklist</h3>
+<ul class="checklist">
+  <li>Foam Rolling (15 min): Calves 3 min ea, Quads 2 min ea, IT Band 1 min R / 3 min L, Glutes 2 min ea, Upper back 3 min</li>
+  <li>Slant Board Calf Stretch: 5 min</li>
+  <li>Light Core Circuit (daily routine)</li>
+  <li>Hip/IT Band Circuit (daily routine)</li>
+  <li>Hip Opener Stretches: 10 min (extra pigeon on left)</li>
+  <li>Neck Release: Levator scap 1 min ea, Upper trap 1 min ea, Chin tucks x10</li>
+  <li>Optional: 20-30 min easy walk</li>
+</ul>
+
+<p><strong>How Body Feels:</strong> <span class="write-line" style="display:inline-block;width:70%"></span></p>
+
+<!-- WEEKLY SUMMARY -->
+<h2 class="page-break">WEEK 1 SUMMARY</h2>
+
+<h3>Weights Used (Baseline for Week 2)</h3>
+<table>
+  <tr><th>Exercise</th><th>Weight</th><th>Exercise</th><th>Weight</th></tr>
+  <tr><td>Leg Press</td><td></td><td>Hip Thrust</td><td></td></tr>
+  <tr><td>DB Bench Press</td><td></td><td>Hip Adductor</td><td></td></tr>
+  <tr><td>Split Squat</td><td></td><td>Hip Abductor</td><td></td></tr>
+  <tr><td>Lat Pulldown</td><td></td><td>Seated Calf Raise</td><td></td></tr>
+  <tr><td>Cable Row</td><td></td><td>Farmer Carry</td><td></td></tr>
+  <tr><td>Romanian Deadlift</td><td></td><td>Goblet Squat</td><td></td></tr>
+</table>
+
+<h3>Zone 2 Totals</h3>
+<table>
+  <tr><th>Day</th><th>Activity</th><th>Duration</th><th>Avg HR</th></tr>
+  <tr><td>Mon</td><td></td><td>30 min</td><td></td></tr>
+  <tr><td>Wed</td><td></td><td>30 min</td><td></td></tr>
+  <tr><td>Sat</td><td></td><td>___ min</td><td></td></tr>
+  <tr><td><strong>Total</strong></td><td></td><td><strong>___ min</strong></td><td></td></tr>
+</table>
+<p class="section-note">Target: 150+ min/week</p>
+
+<h3>VO2 Max Progress</h3>
+<table>
+  <tr><th>Day</th><th>Calories</th><th>Peak HR</th><th>Notes</th></tr>
+  <tr><td>Tuesday</td><td></td><td></td><td></td></tr>
+  <tr><td>Friday</td><td></td><td></td><td></td></tr>
+</table>
+
+<h3>Weekly Check-In (End of Week)</h3>
+<table>
+  <tr><td>Resting HR (Apple Watch)</td><td style="width:80px"></td><td>Energy (1-10)</td><td style="width:80px"></td></tr>
+  <tr><td>VO2 Max Estimate</td><td></td><td>Sleep Quality (1-10)</td><td></td></tr>
+  <tr><td>Calf Feel (1-10)</td><td></td><td>Body Weight</td><td></td></tr>
+</table>
+
+<h3>Notes for Next Week</h3>
+<div class="write-line"></div>
+<div class="write-line"></div>
+<div class="write-line"></div>
+
+<h3>Future Exercises (Add When Ready)</h3>
+<table>
+  <tr><th>Exercise</th><th>Why Waiting</th><th>Add When</th></tr>
+  <tr><td>Lateral Raises</td><td>Can aggravate upper trap/neck</td><td>Neck/shoulder tension resolved</td></tr>
+  <tr><td>Plyometrics</td><td>Need calf strength first</td><td>Week 5+ if calves 8+/10</td></tr>
+  <tr><td>Running</td><td>Calf rehab in progress</td><td>Week 3+ if calves ready</td></tr>
+</table>
+
+<div class="important" style="margin-top:20px">
+  <strong>NO RUNNING THIS WEEK</strong> - Focus on building calf strength first
+</div>
+
+<!-- EXERCISE TIPS SECTION -->
+<h2 class="page-break">EXERCISE TIPS &amp; FORM GUIDES</h2>
+<p class="section-note">Click exercise names above to jump here. Watch videos before your first session.</p>
+
+<div class="tips-section">
+
+<!-- CORE -->
+<div class="tip-item" id="tip-dead-bugs">
+  <h4>Dead Bugs</h4>
+  <p><strong>Key cues:</strong> Press lower back into floor (no gap). Move opposite arm/leg slowly. Exhale as you extend.</p>
+  <ul>
+    <li>If back arches, reduce range of motion</li>
+    <li>Quality > speed - 3 sec out, 3 sec back</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=I5xbsA71v1A" class="video-link" target="_blank">YouTube: Squat University - Dead Bug</a>
+</div>
+
+<div class="tip-item" id="tip-bird-dogs">
+  <h4>Bird Dogs</h4>
+  <p><strong>Key cues:</strong> Keep hips level (don't rotate). Reach long, not high. Brace core throughout.</p>
+  <ul>
+    <li>Imagine balancing a cup of water on your lower back</li>
+    <li>Stop if hips drop or rotate</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=wiFNA3sqjCA" class="video-link" target="_blank">YouTube: Squat University - Bird Dog</a>
+</div>
+
+<div class="tip-item" id="tip-side-plank">
+  <h4>Side Plank</h4>
+  <p><strong>Key cues:</strong> Stack shoulders over elbow. Hips up high. Straight line from head to heels.</p>
+  <ul>
+    <li>Don't let hips sag or pike up</li>
+    <li>Modified version: bend bottom knee</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=K2VljzCC16g" class="video-link" target="_blank">YouTube: Squat University - Side Plank</a>
+</div>
+
+<!-- GLUTE/HIP -->
+<div class="tip-item" id="tip-clamshells">
+  <h4>Clamshells (Banded)</h4>
+  <p><strong>Key cues:</strong> Keep feet together, rotate from hip. Don't let pelvis roll back. Feel it in side of glute.</p>
+  <ul>
+    <li>Band above knees, not on kneecaps</li>
+    <li>Slow and controlled - don't use momentum</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=cjk9kSZPneA" class="video-link" target="_blank">YouTube: E3 Rehab - Clamshells Done Right</a>
+</div>
+
+<div class="tip-item" id="tip-leg-raise">
+  <h4>Side-Lying Leg Raise</h4>
+  <p><strong>Key cues:</strong> Slight forward angle of leg (~10°). Lead with heel, not toe. Keep hips stacked.</p>
+  <ul>
+    <li>Don't go too high - quality over range</li>
+    <li>Feel it in glute medius (side of hip)</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=jgh6sGwtTwk" class="video-link" target="_blank">YouTube: E3 Rehab - Side Lying Hip Abduction</a>
+</div>
+
+<div class="tip-item" id="tip-hip-thrust">
+  <h4>Barbell Hip Thrust</h4>
+  <p><strong>Key cues:</strong> Shoulder blades on bench. Chin tucked (don't look at ceiling). Squeeze glutes at top, don't hyperextend back.</p>
+  <ul>
+    <li>Drive through heels</li>
+    <li>Ribs down - don't flare</li>
+    <li>Pause 2 sec at top</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=Zp26q4BY5HE" class="video-link" target="_blank">YouTube: Bret Contreras - Hip Thrust Tutorial</a>
+</div>
+
+<div class="tip-item" id="tip-glute-bridge">
+  <h4>Single-Leg Glute Bridge</h4>
+  <p><strong>Key cues:</strong> Keep hips level. Drive through heel. Squeeze glute at top.</p>
+  <ul>
+    <li>Non-working leg can be straight up or bent</li>
+    <li>Don't let hips drop on one side</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=AVAXhy6pl7o" class="video-link" target="_blank">YouTube: E3 Rehab - Single Leg Glute Bridge</a>
+</div>
+
+<div class="tip-item" id="tip-cable-kickback">
+  <h4>Cable Kickback / Hip Abduction</h4>
+  <p><strong>Key cues:</strong> Stand tall, don't lean. Keep working leg straight. Control the return.</p>
+  <ul>
+    <li>Ankle strap above ankle bone</li>
+    <li>Feel it in glute, not lower back</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=bxBFmUhG8J4" class="video-link" target="_blank">YouTube: Mind Pump TV - Cable Kickbacks</a>
+</div>
+
+<div class="tip-item" id="tip-band-walks">
+  <h4>Lateral Band Walks</h4>
+  <p><strong>Key cues:</strong> Stay low in mini squat. Keep tension on band always. Don't let knees cave.</p>
+  <ul>
+    <li>Band above knees (easier) or around ankles (harder)</li>
+    <li>Take small, controlled steps</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=nJVKhnJEOsw" class="video-link" target="_blank">YouTube: E3 Rehab - Lateral Band Walks</a>
+</div>
+
+<div class="tip-item" id="tip-hip-machine">
+  <h4>Hip Adductor/Abductor Machine</h4>
+  <p><strong>Key cues:</strong> Sit tall, back against pad. Controlled movement both directions. Don't slam weights.</p>
+  <ul>
+    <li>Adductor (squeeze in) = inner thigh</li>
+    <li>Abductor (push out) = glute medius/outer hip</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=HBXGF1fkbYE" class="video-link" target="_blank">YouTube: Renaissance Periodization - Hip Machines</a>
+</div>
+
+<!-- CALF -->
+<div class="tip-item" id="tip-seated-calf">
+  <h4>Seated Calf Raise</h4>
+  <p><strong>Key cues:</strong> Full stretch at bottom (heel below platform). Pause at top. 3 sec eccentric (lowering).</p>
+  <ul>
+    <li>Targets soleus (deep calf)</li>
+    <li>Ball of foot on edge, not toes</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=Yh5TXz9-6Ao" class="video-link" target="_blank">YouTube: Jeff Nippard - Calf Training Science</a>
+</div>
+
+<div class="tip-item" id="tip-standing-calf">
+  <h4>Standing Calf Raise (Smith)</h4>
+  <p><strong>Key cues:</strong> Knees straight (slight soft bend). Full range - stretch at bottom, squeeze at top.</p>
+  <ul>
+    <li>Targets gastrocnemius (outer calf)</li>
+    <li>Don't bounce - control the movement</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=gwLzBJYoWlI" class="video-link" target="_blank">YouTube: Jeff Nippard - Standing Calf Raise</a>
+</div>
+
+<div class="tip-item" id="tip-heel-drops">
+  <h4>Eccentric Heel Drops</h4>
+  <p><strong>Key cues:</strong> Rise up on both feet, lower on ONE foot. 3 seconds down. Use other foot to come back up.</p>
+  <ul>
+    <li>Based on Alfredson protocol for tendon health</li>
+    <li>Slight discomfort OK, sharp pain = stop</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=Yzlf7U_iPjk" class="video-link" target="_blank">YouTube: E3 Rehab - Eccentric Heel Drops</a>
+</div>
+
+<div class="tip-item" id="tip-tibialis">
+  <h4>Tibialis Raises</h4>
+  <p><strong>Key cues:</strong> Back against wall, feet out ~12 inches. Lift toes up toward shins. Slow and controlled.</p>
+  <ul>
+    <li>Feel burn in front of shin</li>
+    <li>Balances calf work, prevents shin splints</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=gNS_QjGAs_k" class="video-link" target="_blank">YouTube: Knees Over Toes Guy - Tibialis Raise</a>
+</div>
+
+<div class="tip-item" id="tip-calf-stretch">
+  <h4>Slant Board Calf Stretch</h4>
+  <p><strong>Key cues:</strong> Straight knee for gastroc, bent knee for soleus. Lean forward gently. Breathe into stretch.</p>
+  <ul>
+    <li>Hold 30-60 sec per leg</li>
+    <li>No bouncing</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=2xMgF1I71tw" class="video-link" target="_blank">YouTube: Squat University - Calf Stretching</a>
+</div>
+
+<!-- LEGS -->
+<div class="tip-item" id="tip-leg-press">
+  <h4>Leg Press</h4>
+  <p><strong>Key cues:</strong> Feet shoulder width, middle of platform. Don't let lower back round at bottom. Control the descent.</p>
+  <ul>
+    <li>Don't lock knees at top</li>
+    <li>Press through whole foot, not just toes</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=IZxyjW7MPJQ" class="video-link" target="_blank">YouTube: Jeff Nippard - Leg Press Guide</a>
+</div>
+
+<div class="tip-item" id="tip-split-squat">
+  <h4>Split Squat</h4>
+  <p><strong>Key cues:</strong> Torso upright. Front knee over ankle (not past toes). Back knee drops straight down.</p>
+  <ul>
+    <li>Weight in front heel, not toes</li>
+    <li>Don't let front knee cave inward</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=pauHlPAKdFQ" class="video-link" target="_blank">YouTube: Squat University - Split Squat</a>
+</div>
+
+<div class="tip-item" id="tip-goblet-squat">
+  <h4>Goblet Squat</h4>
+  <p><strong>Key cues:</strong> Hold DB at chest, elbows down. Sit back and down. Knees track over toes.</p>
+  <ul>
+    <li>Great for learning squat pattern</li>
+    <li>Go as deep as mobility allows with good form</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=MeIiIdhvXT4" class="video-link" target="_blank">YouTube: Squat University - Goblet Squat</a>
+</div>
+
+<div class="tip-item" id="tip-rdl">
+  <h4>Romanian Deadlift (RDL)</h4>
+  <p><strong>Key cues:</strong> Soft knees (slight bend), hinge at hips. Bar/DBs stay close to legs. Feel stretch in hamstrings.</p>
+  <ul>
+    <li>Back stays flat - no rounding</li>
+    <li>Stop when you feel hamstring stretch, don't force depth</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=7j-2w4-P14I" class="video-link" target="_blank">YouTube: Jeff Nippard - RDL Form</a>
+</div>
+
+<div class="tip-item" id="tip-single-leg-rdl">
+  <h4>Single-Leg RDL</h4>
+  <p><strong>Key cues:</strong> Hinge forward as back leg goes back. Keep hips square. Light weight or bodyweight.</p>
+  <ul>
+    <li>Touch wall or rack for balance if needed</li>
+    <li>Great for balance + hamstring</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=59SIZc0iGSw" class="video-link" target="_blank">YouTube: Squat University - Single Leg RDL</a>
+</div>
+
+<div class="tip-item" id="tip-step-ups">
+  <h4>Step-Ups (Forward & Lateral)</h4>
+  <p><strong>Key cues:</strong> Drive through heel of top foot. Don't push off back foot. Control the descent.</p>
+  <ul>
+    <li>Box height: knee at 90° when foot is on box</li>
+    <li>Lateral: step to side, same cues</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=dQqApCGd5Ss" class="video-link" target="_blank">YouTube: Squat University - Step Ups</a>
+</div>
+
+<div class="tip-item" id="tip-leg-curl">
+  <h4>Prone Leg Curl</h4>
+  <p><strong>Key cues:</strong> Hips stay down on pad. Curl all the way up. Control the lowering.</p>
+  <ul>
+    <li>Don't let hips lift off pad</li>
+    <li>Point toes to increase hamstring engagement</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=ELOCsoDSmrg" class="video-link" target="_blank">YouTube: Renaissance Periodization - Leg Curl</a>
+</div>
+
+<div class="tip-item" id="tip-ghd">
+  <h4>GHD Back Extension</h4>
+  <p><strong>Key cues:</strong> Hinge at hips, not lower back. Squeeze glutes at top. Don't hyperextend.</p>
+  <ul>
+    <li>Pad at hip crease</li>
+    <li>Hands across chest or behind head</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=ph3pddpKzzw" class="video-link" target="_blank">YouTube: Squat University - Back Extension</a>
+</div>
+
+<div class="tip-item" id="tip-bosu">
+  <h4>Bosu Balance / Squat</h4>
+  <p><strong>Key cues:</strong> Start with just standing on it. Progress to squats. Eyes forward, not down.</p>
+  <ul>
+    <li>Dome side up is easier than flat side up</li>
+    <li>Great for ankle stability</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=FRmSavRaeQY" class="video-link" target="_blank">YouTube: E3 Rehab - Bosu Ball Exercises</a>
+</div>
+
+<!-- UPPER BODY -->
+<div class="tip-item" id="tip-db-bench">
+  <h4>Dumbbell Bench Press</h4>
+  <p><strong>Key cues:</strong> Shoulder blades squeezed and DOWN. Feet flat on floor. Lower to chest level, press up.</p>
+  <ul>
+    <li>Elbows at ~45° angle (not flared 90°)</li>
+    <li>Control the descent</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=VmB1G1K7v94" class="video-link" target="_blank">YouTube: Jeff Nippard - DB Bench Press</a>
+</div>
+
+<div class="tip-item" id="tip-pushup">
+  <h4>Push-Up / Incline Push-Up</h4>
+  <p><strong>Key cues:</strong> Body in straight line. Elbows at 45°. Chest to floor (or close). Core tight.</p>
+  <ul>
+    <li>Incline (hands elevated) = easier</li>
+    <li>Don't let hips sag or pike up</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=IODxDxX7oi4" class="video-link" target="_blank">YouTube: Jeff Nippard - Perfect Push-Up</a>
+</div>
+
+<div class="tip-item" id="tip-lat-pulldown">
+  <h4>Lat Pulldown</h4>
+  <p><strong>Key cues:</strong> <strong>DEPRESS shoulders first</strong> (pull shoulder blades down), then pull bar to upper chest. Lean back slightly.</p>
+  <ul>
+    <li>Don't shrug shoulders up</li>
+    <li>Feel it in lats (sides of back), not just arms</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=CAwf7n6Luuc" class="video-link" target="_blank">YouTube: Jeff Nippard - Lat Pulldown</a>
+</div>
+
+<div class="tip-item" id="tip-cable-row">
+  <h4>Seated Cable Row</h4>
+  <p><strong>Key cues:</strong> <strong>RETRACT + DEPRESS</strong> shoulder blades. Pull to lower chest/upper abdomen. Squeeze 2 sec.</p>
+  <ul>
+    <li>Don't lean back excessively</li>
+    <li>Feel squeeze between shoulder blades</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=GZbfZ033f74" class="video-link" target="_blank">YouTube: Jeff Nippard - Cable Row</a>
+</div>
+
+<div class="tip-item" id="tip-db-row">
+  <h4>Single-Arm DB Row</h4>
+  <p><strong>Key cues:</strong> Pull elbow back toward hip. Squeeze shoulder blade. Don't rotate torso.</p>
+  <ul>
+    <li>Brace on bench with other hand</li>
+    <li>Row to hip, not to chest</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=pYcpY20QaE8" class="video-link" target="_blank">YouTube: Jeff Nippard - Dumbbell Row</a>
+</div>
+
+<div class="tip-item" id="tip-trx-row">
+  <h4>TRX Row</h4>
+  <p><strong>Key cues:</strong> Body straight like a plank. Pull chest to hands. <strong>Depress shoulders</strong> throughout.</p>
+  <ul>
+    <li>Walk feet forward = harder</li>
+    <li>Great for scapular control</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=3lKk1R7hNhc" class="video-link" target="_blank">YouTube: TRX Training - TRX Row</a>
+</div>
+
+<div class="tip-item" id="tip-face-pulls">
+  <h4>Face Pulls → External Rotation</h4>
+  <p><strong>Key cues:</strong> Pull to face, then rotate hands outward. <strong>Squeeze lower traps</strong>. Elbows high.</p>
+  <ul>
+    <li>Light weight, high reps</li>
+    <li>Great for posture and shoulder health</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=eIq5CB9JfKE" class="video-link" target="_blank">YouTube: Jeff Nippard - Face Pulls</a>
+</div>
+
+<div class="tip-item" id="tip-farmer-carry">
+  <h4>Farmer Carry</h4>
+  <p><strong>Key cues:</strong> <strong>Shoulders DOWN</strong> (don't shrug). Stand tall, core braced. Walk with control.</p>
+  <ul>
+    <li>Go heavy - grip should be challenged</li>
+    <li>Great for core, grip, and posture</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=Fkzk_RqlYig" class="video-link" target="_blank">YouTube: Squat University - Farmer Carry</a>
+</div>
+
+<!-- SHOULDER/NECK -->
+<div class="tip-item" id="tip-ext-rotation">
+  <h4>Cable External Rotation</h4>
+  <p><strong>Key cues:</strong> Elbow pinned to side at 90°. Rotate forearm outward. Slow and controlled.</p>
+  <ul>
+    <li>Light weight - this is for rotator cuff health</li>
+    <li>Keep shoulder down, don't shrug</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=hcYqeOuymZY" class="video-link" target="_blank">YouTube: E3 Rehab - External Rotation</a>
+</div>
+
+<div class="tip-item" id="tip-scap-pushup">
+  <h4>Scapular Push-Up</h4>
+  <p><strong>Key cues:</strong> Arms stay straight. Only move shoulder blades - squeeze together, then push apart (protract).</p>
+  <ul>
+    <li>Great for serratus anterior</li>
+    <li>Small movement, big benefit</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=y77MaP5uWUg" class="video-link" target="_blank">YouTube: E3 Rehab - Scapular Push-Up</a>
+</div>
+
+<div class="tip-item" id="tip-prone-w">
+  <h4>Prone I-T-W</h4>
+  <p><strong>Key cues:</strong> Lie face down on bench. I = arms straight down. T = arms out to sides. W = elbows bent, squeeze back.</p>
+  <ul>
+    <li>Very light weight (3-5 lbs)</li>
+    <li>Focus on <strong>lower trap squeeze</strong></li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=bIpPBgJwhYY" class="video-link" target="_blank">YouTube: E3 Rehab - Prone Y T W</a>
+</div>
+
+<div class="tip-item" id="tip-wall-slides">
+  <h4>Wall Slides</h4>
+  <p><strong>Key cues:</strong> Back and forearms flat on wall. Slide arms up and down. Keep contact with wall throughout.</p>
+  <ul>
+    <li>Great for serratus and shoulder mobility</li>
+    <li>If hard to keep contact, stand further from wall</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=ygJvzxMEsFA" class="video-link" target="_blank">YouTube: E3 Rehab - Wall Slides</a>
+</div>
+
+<div class="tip-item" id="tip-chin-tuck">
+  <h4>Chin Tuck (with Resistance)</h4>
+  <p><strong>Key cues:</strong> Make a "double chin." Push head straight back (not down). Hold against hand resistance.</p>
+  <ul>
+    <li>Strengthens deep neck flexors</li>
+    <li>Key for forward head posture correction</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=wQylqaCl8Zo" class="video-link" target="_blank">YouTube: E3 Rehab - Chin Tucks</a>
+</div>
+
+<div class="tip-item" id="tip-levator-stretch">
+  <h4>Levator Scapulae Stretch</h4>
+  <p><strong>Key cues:</strong> Tilt ear to shoulder → then rotate nose toward armpit. Gentle pressure with hand. Hold 30 sec.</p>
+  <ul>
+    <li>Don't force - gentle stretch</li>
+    <li>Key for neck/shoulder junction pain</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=XpMzpE27N8E" class="video-link" target="_blank">YouTube: E3 Rehab - Levator Scapulae Stretch</a>
+</div>
+
+<div class="tip-item" id="tip-foam-roll-it">
+  <h4>Foam Roll IT Band</h4>
+  <p><strong>Key cues:</strong> Side lying, roll from hip to just above knee. Slow - 1 inch per second. Pause on tender spots.</p>
+  <ul>
+    <li>Support yourself with arms and top leg</li>
+    <li>Uncomfortable but shouldn't be excruciating</li>
+  </ul>
+  <a href="https://www.youtube.com/watch?v=jFT3FRvmFok" class="video-link" target="_blank">YouTube: E3 Rehab - IT Band Foam Rolling</a>
+</div>
+
+</div>
+
+<p style="margin-top:20px; text-align:center"><a href="#" class="back-to-top">↑ Back to Top</a></p>
+
+</body>
+</html>

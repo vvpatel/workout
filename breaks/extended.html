@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Extended Reset - 10-15 Minutes</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Libre+Baskerville:wght@400&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -28,7 +28,7 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 25px;
+            padding: 40px 25px 25px 25px;
             max-width: 1200px;
             margin: 0 auto;
             background-image: 
@@ -296,9 +296,23 @@
         .completion-banner p { opacity: 0.9; font-size: 0.9rem; }
         
         .hidden { display: none !important; }
+        
+        .quote-banner {
+            text-align: center;
+            font-family: 'Libre Baskerville', Georgia, serif;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
+    <div class="quote-banner" id="quoteBanner"></div>
+    
     <div class="header">
         <div class="badge">🔥 Extended Reset</div>
         <h1>Full Recovery</h1>
@@ -637,6 +651,60 @@
                 item.classList.toggle('completed');
             });
         });
+        
+        const quotes = [
+            "We suffer more from imagination than from reality. — Seneca",
+            "We are what we think, having become what we thought.",
+            "The quality of your life will be determined by the amount of uncertainty you can comfortably deal with.",
+            "Ring the bells that still can ring, forget your perfect offering. There is a crack in everything—that's how the light gets in. — Leonard Cohen",
+            "Courage is not acting in the absence of fear, it's taking action in the face of fear.",
+            "He who has a why to live for can bear almost any how. — Nietzsche",
+            "To meet triumph and disaster and to treat those two imposters the same. — Kipling",
+            "The best thing and the worst thing are the same thing.",
+            "Joy and woe are woven fine. — William Blake",
+            "Inspiration is perishable—act on it immediately. — Naval",
+            "Be so good they can't ignore you. — Steve Martin",
+            "Screw it, let's do it. — Branson",
+            "You miss 100% of the shots you don't take. — Gretzky",
+            "Do, fail, learn.",
+            "Either write something worth reading or do something worth writing. — Franklin",
+            "Everything you want is on the other side of fear.",
+            "What we do when people aren't looking is an indicator of who we are.",
+            "Wisdom is understanding the long-term consequences of your actions.",
+            "Tactics without strategy is the noise before defeat. — Sun Tzu",
+            "A problem well stated is a problem half solved. — Kettering",
+            "Curiosity is more important than knowledge. — Einstein",
+            "Insight comes from looking at what's been on the table all along. — McCullough",
+            "Excellence is the capacity to take pain. — Isadore Sharp",
+            "Your blessing in life is when you find the torture you're comfortable with. — Seinfeld",
+            "If you've got a good work ethic, it needs to be matched with a good rest ethic.",
+            "Success is stumbling from failure to failure with no loss of enthusiasm. — Churchill",
+            "You have to throw out the good stuff to get the best stuff.",
+            "Imposter syndrome is proof that you are taking on new challenges.",
+            "If it makes you happy, it's not a waste of time.",
+            "For me, success is not a public thing. It's when you have fewer and fewer regrets. — Toni Morrison",
+            "The soul becomes dyed with the color of its thoughts. — Marcus Aurelius",
+            "Stay hungry, stay foolish. — Jobs",
+            "Design is not just what it looks like. Design is how it works. — Jobs",
+            "Simple can be harder than complex. You have to work hard to make your thinking clean. — Jobs",
+            "Your time is limited. Don't waste it living someone else's life. — Jobs",
+            "The people who are crazy enough to think they can change the world are the ones who do. — Jobs",
+            "Play long-term games with long-term people. — Naval",
+            "Specific knowledge is found by pursuing your genuine curiosity. — Naval",
+            "Desire is a contract you make with yourself to be unhappy until you get what you want. — Naval",
+            "I'm not lazy, I'm on energy-saving mode.",
+            "The elevator to success is broken. Take the stairs.",
+            "I haven't failed. I've just found 10,000 ways that won't work. — Edison",
+            "The trouble with doing nothing is you never know when you're finished. — Groucho Marx",
+            "If at first you don't succeed, redefine success.",
+            "Almost everything will work again if you unplug it for a few minutes—including you. — Anne Lamott",
+            "The time to relax is when you don't have time for it. — Sydney Harris",
+            "Tension is who you think you should be. Relaxation is who you are. — Chinese Proverb",
+            "The greatest weapon against stress is our ability to choose one thought over another. — William James"
+        ];
+        
+        // Display random quote
+        document.getElementById('quoteBanner').textContent = quotes[Math.floor(Math.random() * quotes.length)];
         
         // Auto-start on page load
         window.addEventListener('load', () => {
