@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Week 2 Workout</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #3b82f6;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --border: #334155;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.5; padding-bottom: 100px; }
+    .header { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); padding: 20px 16px; position: sticky; top: 0; z-index: 100; }
+    .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .header .subtitle { font-size: 13px; opacity: 0.9; }
+    .day-nav { display: flex; overflow-x: auto; gap: 8px; padding: 12px 16px; background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 76px; z-index: 99; }
+    .day-nav::-webkit-scrollbar { display: none; }
+    .day-btn { flex-shrink: 0; padding: 8px 14px; border-radius: 20px; border: none; background: var(--bg); color: var(--text-muted); font-size: 13px; font-weight: 500; cursor: pointer; }
+    .day-btn.active { background: var(--accent); color: white; }
+    .day-btn.rest { background: #064e3b; color: #6ee7b7; }
+    .section { display: none; padding: 16px; }
+    .section.active { display: block; }
+    .section-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .section-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
+    .card { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .card-title { font-size: 16px; font-weight: 600; }
+    .card-time { font-size: 12px; color: var(--text-muted); background: var(--bg); padding: 4px 8px; border-radius: 12px; }
+    .exercise { display: flex; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .exercise:last-child { border-bottom: none; padding-bottom: 0; }
+    .exercise-check { width: 24px; height: 24px; border: 2px solid var(--border); border-radius: 6px; margin-right: 12px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .exercise-check.checked { background: var(--success); border-color: var(--success); }
+    .exercise-check.checked::after { content: "✓"; color: white; font-size: 14px; font-weight: bold; }
+    .exercise-info { flex: 1; }
+    .exercise-name { font-weight: 500; margin-bottom: 2px; }
+    .exercise-name a { color: #60a5fa; text-decoration: none; }
+    .exercise-details { font-size: 14px; color: var(--text-muted); }
+    .exercise-note { font-size: 12px; color: var(--warning); margin-top: 4px; }
+    .exercise-note.danger { color: var(--danger); }
+    .exercise-weight { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 14px; color: var(--text); width: 65px; text-align: center; margin-left: 8px; }
+    .exercise-weight:focus { border-color: var(--accent); outline: none; }
+    .exercise-weight.saved { border-color: var(--success); }
+    .tracking { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .tracking-item { background: var(--bg); border-radius: 8px; padding: 12px; }
+    .tracking-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    .tracking-input { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); font-size: 18px; font-weight: 600; width: 100%; padding: 4px 0; }
+    .tracking-input:focus { border-color: var(--accent); outline: none; }
+    .important { background: rgba(245, 158, 11, 0.15); border-left: 3px solid var(--warning); padding: 12px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; }
+    .important.danger { background: rgba(239, 68, 68, 0.15); border-color: var(--danger); }
+    .protocol-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .protocol-item.interval { background: rgba(239, 68, 68, 0.1); margin: 0 -16px; padding: 10px 16px; }
+    .z2-options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .z2-option { padding: 8px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; font-size: 14px; cursor: pointer; }
+    .z2-option.selected { background: var(--accent); border-color: var(--accent); }
+    .notes-area { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: var(--text); font-size: 14px; resize: vertical; min-height: 80px; margin-top: 8px; }
+    .notes-area:focus { border-color: var(--accent); outline: none; }
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .summary-item { background: var(--bg); border-radius: 8px; padding: 12px; }
+    .summary-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+    .tip-card { background: var(--card); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+    .tip-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .tip-header h4 { font-size: 15px; font-weight: 600; }
+    .tip-toggle { font-size: 20px; color: var(--text-muted); transition: transform 0.2s; }
+    .tip-card.open .tip-toggle { transform: rotate(180deg); }
+    .tip-content { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+    .tip-card.open .tip-content { display: block; padding-top: 12px; }
+    .tip-content p { font-size: 14px; margin-bottom: 8px; }
+    .tip-content ul { font-size: 13px; color: var(--text-muted); margin-left: 16px; margin-bottom: 12px; }
+    .video-btn { display: inline-flex; align-items: center; gap: 6px; background: #dc2626; color: white; padding: 8px 14px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 500; }
+    .video-btn::before { content: "▶"; font-size: 10px; }
+    .export-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--border); padding: 12px 16px; display: flex; gap: 12px; z-index: 100; }
+    .export-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .export-btn.primary { background: var(--accent); color: white; }
+    .export-btn.secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+    .save-indicator { position: fixed; top: 80px; right: 16px; background: var(--success); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; opacity: 0; transition: opacity 0.3s; z-index: 101; }
+    .save-indicator.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Week 2: Recovery & Rebuild</h1>
+  <div class="subtitle">Upper trap recovery • Lighter loads • Calf rehab</div>
+</div>
+
+<div class="save-indicator" id="saveIndicator">✓ Saved</div>
+
+<nav class="day-nav">
+  <button class="day-btn active" onclick="showSection('daily')">Daily</button>
+  <button class="day-btn" onclick="showSection('mon')">Mon</button>
+  <button class="day-btn" onclick="showSection('tue')">Tue</button>
+  <button class="day-btn" onclick="showSection('wed')">Wed</button>
+  <button class="day-btn" onclick="showSection('thu')">Thu</button>
+  <button class="day-btn" onclick="showSection('fri')">Fri</button>
+  <button class="day-btn" onclick="showSection('sat')">Sat</button>
+  <button class="day-btn rest" onclick="showSection('sun')">Sun</button>
+  <button class="day-btn" onclick="showSection('tips')">Tips</button>
+  <button class="day-btn" onclick="showSection('summary')">Summary</button>
+</nav>
+
+<!-- DAILY SECTION -->
+<div id="daily" class="section active">
+  <h2 class="section-title">Daily Non-Negotiables</h2>
+  <p class="section-subtitle">Do on OFF days: Tue, Fri, Sat, Sun (~12 min)</p>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">1. Movement</span><span class="card-time">3 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('dead-bugs')">Dead Bugs</a></div><div class="exercise-details">25 each side</div><div class="exercise-note">Low back pressed to floor</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('bird-dogs')">Bird Dogs</a></div><div class="exercise-details">25 each side</div><div class="exercise-note">Hips level, don't rotate</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">2. Stability</span><span class="card-time">1 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('side-plank')">Side Plank RIGHT</a></div><div class="exercise-details">30 sec</div><div class="exercise-note">Stack hips, don't sag</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('side-plank')">Side Plank LEFT</a></div><div class="exercise-details">30 sec</div><div class="exercise-note">Stack hips, don't sag</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">3. Activation</span><span class="card-time">5 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('clamshells')">Clamshells (banded)</a></div><div class="exercise-details">12 R, 15 L</div><div class="exercise-note">Feet together, don't rock</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('leg-raise')">Side-Lying Leg Raise</a></div><div class="exercise-details">12 R, 15 L</div><div class="exercise-note">Squeeze glute</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('band-walks')">Lateral Band Walks</a></div><div class="exercise-details">10 each way</div><div class="exercise-note">Stay low, knees out</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('chin-tuck')">Chin Tuck + Hold</a></div><div class="exercise-details">10 × 5 sec</div><div class="exercise-note">Make double chin</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('prone-w')">Prone W's</a></div><div class="exercise-details">12 reps</div><div class="exercise-note danger">⚠️ Squeeze LOWER traps, not upper</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('wall-slides')">Wall Slides</a></div><div class="exercise-details">10 reps</div><div class="exercise-note">Back + arms on wall</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('heel-drops')">Eccentric Heel Drops</a></div><div class="exercise-details">15 each</div><div class="exercise-note">3 sec lower</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('tibialis')">Tibialis Raises</a></div><div class="exercise-details">15 reps</div><div class="exercise-note">Flex toes to shin</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">4. Stretches + Foam Roll</span><span class="card-time">5 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Doorway Chest Stretch</div><div class="exercise-details">30s</div><div class="exercise-note">Forearm on frame, lean</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('levator-stretch')">Levator Scap Stretch</a></div><div class="exercise-details">30s each side</div><div class="exercise-note">Ear to armpit</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('calf-stretch')">Slant Board Calf Stretch</a></div><div class="exercise-details">1 min</div><div class="exercise-note">Straight leg, lean</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('foam-roll-it')">Foam Roll IT Band</a></div><div class="exercise-details">1 min R, 2 min L</div><div class="exercise-note">Hip to knee</div></div></div>
+  </div>
+</div>
+
+<!-- MONDAY -->
+<div id="mon" class="section">
+  <h2 class="section-title">Monday</h2>
+  <p class="section-subtitle">Strength A + Zone 2 • 90 min • Gym</p>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Warm-Up</span><span class="card-time">8 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Assault Bike (easy) + stretches + clamshells</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Calf Circuit</span><span class="card-time">10 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('seated-calf')">Seated Calf Raise</a></div><div class="exercise-details">3 × 15</div><div class="exercise-note">Slow 3 sec eccentric</div></div><input type="text" class="exercise-weight" data-key="mon-seated-calf" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('standing-calf')">Smith Standing Calf</a></div><div class="exercise-details">3 × 12</div><div class="exercise-note">Full ROM</div></div><input type="text" class="exercise-weight" data-key="mon-standing-calf" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('heel-drops')">Single-Leg Eccentric Drops</a></div><div class="exercise-details">2 × 10 each • BW</div><div class="exercise-note">3 sec lower</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Glute Focus</span><span class="card-time">10 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('frog-pumps')">Frog Pumps</a></div><div class="exercise-details">3 × 20 • BW</div><div class="exercise-note">Soles together, squeeze glutes</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('cable-kickback')">Cable Kickback</a></div><div class="exercise-details">2 × 12 each</div><div class="exercise-note">Squeeze glute, don't arch back</div></div><input type="text" class="exercise-weight" data-key="mon-kickback" placeholder="lbs"></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Main Lifts - Push/Quad</span><span class="card-time">20 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('leg-press')">Leg Press</a></div><div class="exercise-details">3 × 10</div><div class="exercise-note">Full depth, knees track toes</div></div><input type="text" class="exercise-weight" data-key="mon-leg-press" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Chest Press Machine</div><div class="exercise-details">3 × 10</div><div class="exercise-note">Shoulder blades back</div></div><input type="text" class="exercise-weight" data-key="mon-chest-press" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('split-squat')">Split Squat</a></div><div class="exercise-details">3 × 10 each</div><div class="exercise-note">Knee over ankle</div></div><input type="text" class="exercise-weight" data-key="mon-split-squat" placeholder="lbs"></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">PT + Shoulder Health</span><span class="card-time">12 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('lat-pulldown')">Lat Pulldown</a></div><div class="exercise-details">3 × 12</div><div class="exercise-note danger">⚠️ Shoulders DOWN, NO shrugging</div></div><input type="text" class="exercise-weight" data-key="mon-lat-pulldown" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('cable-row')">Seated Cable Row</a></div><div class="exercise-details">3 × 12</div><div class="exercise-note danger">⚠️ Depress scaps, NO neck tension</div></div><input type="text" class="exercise-weight" data-key="mon-cable-row" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('ext-rotation')">Cable External Rotation</a></div><div class="exercise-details">2 × 15 each</div><div class="exercise-note">Elbow pinned to side</div></div><input type="text" class="exercise-weight" data-key="mon-ext-rotation" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('chin-tuck')">Chin Tuck w/ Resistance</a></div><div class="exercise-details">2 × 10 • Hold 5 sec</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('face-pulls')">Face Pulls → Ext Rotation</a></div><div class="exercise-details">2 × 12</div><div class="exercise-note danger">⚠️ Squeeze LOWER traps</div></div><input type="text" class="exercise-weight" data-key="mon-face-pulls" placeholder="lbs"></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Zone 2 Cardio</span><span class="card-time">30 min</span></div>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px;">Target HR: 120-130 bpm | Power: 76-102W</p>
+    <div class="z2-options">
+      <div class="z2-option" data-key="mon-z2" onclick="selectZ2(this, 'Peloton')">Peloton</div>
+      <div class="z2-option" data-key="mon-z2" onclick="selectZ2(this, 'Stationary')">Stationary</div>
+    </div>
+    <div class="tracking">
+      <div class="tracking-item"><div class="tracking-label">Avg HR</div><input type="text" class="tracking-input" data-key="mon-z2-hr" placeholder="—"></div>
+      <div class="tracking-item"><div class="tracking-label">Avg Power</div><input type="text" class="tracking-input" data-key="mon-z2-power" placeholder="W"></div>
+    </div>
+  </div>
+  
+  <p style="color: var(--text-muted); margin-top: 16px;">Notes:</p>
+  <textarea class="notes-area" data-key="mon-notes" placeholder="How did the workout feel?"></textarea>
+</div>
+
+<!-- TUESDAY -->
+<div id="tue" class="section">
+  <h2 class="section-title">Tuesday</h2>
+  <p class="section-subtitle">VO2 Max • 45 min • Assault Bike</p>
+  
+  <div class="important"><strong>4×4 Protocol:</strong> 4 min ALL OUT, 3 min recovery × 4</div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Protocol</span></div>
+    <div class="protocol-item"><span>Warm-Up</span><span style="color:var(--text-muted)">8 min easy</span></div>
+    <div class="protocol-item interval"><span><strong>Interval 1</strong></span><span>4 min ALL OUT</span></div>
+    <div class="protocol-item"><span>Recovery</span><span style="color:var(--text-muted)">3 min easy</span></div>
+    <div class="protocol-item interval"><span><strong>Interval 2</strong></span><span>4 min ALL OUT</span></div>
+    <div class="protocol-item"><span>Recovery</span><span style="color:var(--text-muted)">3 min easy</span></div>
+    <div class="protocol-item interval"><span><strong>Interval 3</strong></span><span>4 min ALL OUT</span></div>
+    <div class="protocol-item"><span>Recovery</span><span style="color:var(--text-muted)">3 min easy</span></div>
+    <div class="protocol-item interval"><span><strong>Interval 4</strong></span><span>4 min ALL OUT</span></div>
+    <div class="protocol-item"><span>Cool-Down</span><span style="color:var(--text-muted)">5 min easy</span></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Tracking</span></div>
+    <div class="tracking">
+      <div class="tracking-item"><div class="tracking-label">Total Calories</div><input type="text" class="tracking-input" data-key="tue-cals" placeholder="—"></div>
+      <div class="tracking-item"><div class="tracking-label">Peak HR</div><input type="text" class="tracking-input" data-key="tue-peak-hr" placeholder="—"></div>
+      <div class="tracking-item"><div class="tracking-label">Avg Interval HR</div><input type="text" class="tracking-input" data-key="tue-avg-hr" placeholder="—"></div>
+      <div class="tracking-item"><div class="tracking-label">RPE (1-10)</div><input type="text" class="tracking-input" data-key="tue-rpe" placeholder="—"></div>
+    </div>
+  </div>
+  
+  <div class="important"><strong>Don't forget:</strong> Do Daily Non-Negotiables this morning!</div>
+</div>
+
+<!-- WEDNESDAY -->
+<div id="wed" class="section">
+  <h2 class="section-title">Wednesday</h2>
+  <p class="section-subtitle">Strength B + Zone 2 • 90 min • Gym</p>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Warm-Up</span><span class="card-time">8 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Assault Bike + Hip circles + Clamshells</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Calf Circuit</span><span class="card-time">10 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Seated Calf Raise</div><div class="exercise-details">3 × 15</div></div><input type="text" class="exercise-weight" data-key="wed-seated-calf" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Smith Standing Calf</div><div class="exercise-details">3 × 12</div></div><input type="text" class="exercise-weight" data-key="wed-standing-calf" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Single-Leg Eccentric Drops</div><div class="exercise-details">2 × 10 each</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Glute + Posterior Chain</span><span class="card-time">12 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('leg-press')">Leg Press</a></div><div class="exercise-details">3 × 10</div><div class="exercise-note">Control descent</div></div><input type="text" class="exercise-weight" data-key="wed-leg-press" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('ghd')">GHD Back Extension</a></div><div class="exercise-details">3 × 10 • BW</div><div class="exercise-note">Squeeze glutes at top</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('glute-bridge')">Single-Leg Glute Bridge</a></div><div class="exercise-details">2 × 10 each • BW</div><div class="exercise-note">Hold 2 sec at top</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Main Lifts - Pull/Hinge</span><span class="card-time">18 min</span></div>
+    <div class="important danger" style="margin: 0 0 12px 0;"><strong>LIGHT WEIGHTS THIS WEEK</strong> - Focus on form, not load</div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Cable Row</div><div class="exercise-details">3 × 12</div><div class="exercise-note danger">⚠️ 20 lb - Shoulders DOWN, no shrugging</div></div><input type="text" class="exercise-weight" data-key="wed-cable-row" placeholder="lbs" value="20"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Lat Pulldown (normal grip)</div><div class="exercise-details">3 × 12</div><div class="exercise-note danger">⚠️ 20 lb - Depress shoulders FIRST</div></div><input type="text" class="exercise-weight" data-key="wed-lat-pulldown" placeholder="lbs" value="20"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('leg-curl')">Prone Leg Curl</a></div><div class="exercise-details">3 × 12</div><div class="exercise-note">Hips stay on pad</div></div><input type="text" class="exercise-weight" data-key="wed-leg-curl" placeholder="lbs"></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Cutting Sport Prep</span><span class="card-time">12 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Hip Adductor Machine</div><div class="exercise-details">3 × 12</div><div class="exercise-note">Squeeze inner thighs</div></div><input type="text" class="exercise-weight" data-key="wed-adductor" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Hip Abductor Machine</div><div class="exercise-details">3 × 12</div><div class="exercise-note">Squeeze glutes</div></div><input type="text" class="exercise-weight" data-key="wed-abductor" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('band-walks')">Lateral Band Walks</a></div><div class="exercise-details">2 × 15 each way</div><div class="exercise-note">Stay low, knees out</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Cable Hip Abduction</div><div class="exercise-details">12 R, 15 L</div><div class="exercise-note">Squeeze glute</div></div><input type="text" class="exercise-weight" data-key="wed-hip-abd" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('bosu')">Single-Leg Bosu Balance</a></div><div class="exercise-details">30 sec each</div><div class="exercise-note">Soft knee, eyes forward</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Zone 2 Cardio</span><span class="card-time">30 min</span></div>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px;">Target HR: 120-130 bpm | Power: 76-102W</p>
+    <div class="z2-options">
+      <div class="z2-option" onclick="selectZ2(this, 'Pool')">Pool</div>
+      <div class="z2-option" onclick="selectZ2(this, 'Outdoor')">Outdoor Bike</div>
+      <div class="z2-option" onclick="selectZ2(this, 'Peloton')">Peloton</div>
+    </div>
+    <div class="tracking">
+      <div class="tracking-item"><div class="tracking-label">Avg HR</div><input type="text" class="tracking-input" data-key="wed-z2-hr" placeholder="—"></div>
+      <div class="tracking-item"><div class="tracking-label">Duration</div><input type="text" class="tracking-input" data-key="wed-z2-dur" value="30" placeholder="min"></div>
+    </div>
+  </div>
+  
+  <textarea class="notes-area" data-key="wed-notes" placeholder="Post-workout notes..."></textarea>
+</div>
+
+<!-- THURSDAY -->
+<div id="thu" class="section">
+  <h2 class="section-title">Thursday</h2>
+  <p class="section-subtitle">Strength C: Movement + Stability • 50-60 min</p>
+  <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Lighter day - focus on movement quality</p>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Warm-Up + Calf</span><span class="card-time">16 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Easy bike + stretches + clamshells</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Seated Calf Raise (lighter)</div><div class="exercise-details">2 × 15</div></div><input type="text" class="exercise-weight" data-key="thu-seated-calf" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Single-Leg Eccentric Drops</div><div class="exercise-details">2 × 12 each</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Full Body Circuit</span><span class="card-time">25 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('goblet-squat')">Goblet Squat</a></div><div class="exercise-details">3 × 12</div><div class="exercise-note">Deep, chest up</div></div><input type="text" class="exercise-weight" data-key="thu-goblet" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('db-row')">DB Row (single arm)</a></div><div class="exercise-details">3 × 10 each</div><div class="exercise-note danger">⚠️ Don't shrug, neck neutral</div></div><input type="text" class="exercise-weight" data-key="thu-db-row" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('step-ups')">Step-Ups (forward)</a></div><div class="exercise-details">2 × 10 each • BW</div><div class="exercise-note">Drive through heel</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Lateral Step-Ups</div><div class="exercise-details">2 × 10 each • BW</div><div class="exercise-note">Control descent</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('pushup')">Push-Up or Incline</a></div><div class="exercise-details">2 × 12 • BW</div><div class="exercise-note">Elbows 45°, core tight</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Stability + Balance</span><span class="card-time">10 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name"><a href="#" onclick="showTip('single-leg-rdl')">Single-Leg RDL</a></div><div class="exercise-details">2 × 8 each</div><div class="exercise-note">Hinge at hip</div></div><input type="text" class="exercise-weight" data-key="thu-sl-rdl" placeholder="lbs"></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Bosu Squat</div><div class="exercise-details">2 × 10 • BW</div><div class="exercise-note">Slow and controlled</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Single-Leg Balance (eyes closed)</div><div class="exercise-details">30 sec each</div><div class="exercise-note">Soft knee, engage core</div></div></div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Shoulder/Neck Health</span><span class="card-time">8 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Prone I-T-W</div><div class="exercise-details">2 × 8 each • 2 lb or skip</div><div class="exercise-note danger">⚠️ Skip if traps sore</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Wall Slides</div><div class="exercise-details">2 × 10</div><div class="exercise-note">Back + arms on wall</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Chin Tuck w/ Resistance</div><div class="exercise-details">2 × 10</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Levator Scap Stretch</div><div class="exercise-details">30 sec each</div><div class="exercise-note">Ear to armpit</div></div></div>
+  </div>
+  
+  <textarea class="notes-area" data-key="thu-notes" placeholder="Post-workout notes..."></textarea>
+</div>
+
+<!-- FRIDAY -->
+<div id="fri" class="section">
+  <h2 class="section-title">Friday</h2>
+  <p class="section-subtitle">VO2 Max • 45 min • Assault Bike</p>
+  
+  <div class="important"><strong>Same as Tuesday:</strong> 4×4 Protocol</div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Tracking</span></div>
+    <div class="tracking">
+      <div class="tracking-item"><div class="tracking-label">Total Calories</div><input type="text" class="tracking-input" data-key="fri-cals" placeholder="—"></div>
+      <div class="tracking-item"><div class="tracking-label">Peak HR</div><input type="text" class="tracking-input" data-key="fri-peak-hr" placeholder="—"></div>
+      <div class="tracking-item"><div class="tracking-label">Avg Interval HR</div><input type="text" class="tracking-input" data-key="fri-avg-hr" placeholder="—"></div>
+      <div class="tracking-item"><div class="tracking-label">RPE (1-10)</div><input type="text" class="tracking-input" data-key="fri-rpe" placeholder="—"></div>
+    </div>
+    <div style="margin-top: 16px;">
+      <p style="color: var(--text-muted); margin-bottom: 8px;">vs Tuesday:</p>
+      <div class="z2-options">
+        <div class="z2-option" onclick="selectZ2(this, 'Better')">Better</div>
+        <div class="z2-option" onclick="selectZ2(this, 'Same')">Same</div>
+        <div class="z2-option" onclick="selectZ2(this, 'Worse')">Worse</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="important"><strong>Don't forget:</strong> Do Daily Non-Negotiables this morning!</div>
+</div>
+
+<!-- SATURDAY -->
+<div id="sat" class="section">
+  <h2 class="section-title">Saturday</h2>
+  <p class="section-subtitle">Long Zone 2 • 60-90 min</p>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Zone 2 Cardio</span></div>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px;">Target HR: 120-130 bpm (conversational)</p>
+    <div class="z2-options">
+      <div class="z2-option" onclick="selectZ2(this, 'Outdoor Bike')">Outdoor Bike</div>
+      <div class="z2-option" onclick="selectZ2(this, 'Hike')">Hike</div>
+      <div class="z2-option" onclick="selectZ2(this, 'Peloton')">Peloton</div>
+      <div class="z2-option" onclick="selectZ2(this, 'Pool')">Pool</div>
+      <div class="z2-option" onclick="selectZ2(this, 'Stairs')">Stairs</div>
+    </div>
+    <div class="tracking">
+      <div class="tracking-item"><div class="tracking-label">Duration</div><input type="text" class="tracking-input" data-key="sat-duration" placeholder="min"></div>
+      <div class="tracking-item"><div class="tracking-label">Avg HR</div><input type="text" class="tracking-input" data-key="sat-hr" placeholder="—"></div>
+      <div class="tracking-item"><div class="tracking-label">Distance</div><input type="text" class="tracking-input" data-key="sat-distance" placeholder="—"></div>
+      <div class="tracking-item"><div class="tracking-label">Elevation</div><input type="text" class="tracking-input" data-key="sat-elevation" placeholder="—"></div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Post-Cardio Mobility</span><span class="card-time">15 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Foam roll calves</div><div class="exercise-details">2 min each</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Foam roll quads</div><div class="exercise-details">2 min each</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Foam roll IT band</div><div class="exercise-details">1 min R, 2 min L</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Hip flexor stretch</div><div class="exercise-details">1 min each</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Pigeon pose</div><div class="exercise-details">1 min R, 2 min L</div></div></div>
+  </div>
+  
+  <div class="important"><strong>Don't forget:</strong> Do Daily Non-Negotiables this morning!</div>
+</div>
+
+<!-- SUNDAY -->
+<div id="sun" class="section">
+  <h2 class="section-title">Sunday</h2>
+  <p class="section-subtitle">Active Recovery • 30-45 min</p>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Recovery Checklist</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Foam Rolling</div><div class="exercise-details">Calves, quads, IT band, glutes, upper back (15 min)</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Slant Board Calf Stretch</div><div class="exercise-details">5 min</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Daily Core Circuit</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Hip Opener Stretches</div><div class="exercise-details">10 min (extra pigeon on left)</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Neck Release</div><div class="exercise-details">Levator scap + upper trap stretch, chin tucks</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">Easy Walk (optional)</div><div class="exercise-details">20-30 min</div></div></div>
+  </div>
+  
+  <p style="color: var(--text-muted); margin-top: 16px;">How does your body feel?</p>
+  <textarea class="notes-area" data-key="sun-notes" placeholder="Energy, soreness, calf status, trap status..."></textarea>
+</div>
+
+<!-- TIPS SECTION -->
+<div id="tips" class="section">
+  <h2 class="section-title">Exercise Tips</h2>
+  <p class="section-subtitle">Tap to expand • Watch videos for form</p>
+  
+  <div class="tip-card" id="tip-dead-bugs" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Dead Bugs</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Press lower back into floor. Move slowly. Exhale as you extend.</p><a href="https://www.youtube.com/watch?v=I5xbsA71v1A" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-bird-dogs" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Bird Dogs</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Keep hips level. Reach long, not high. Brace core.</p><a href="https://www.youtube.com/watch?v=wiFNA3sqjCA" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-side-plank" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Side Plank</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Stack shoulders over elbow. Hips up. Straight line.</p><a href="https://www.youtube.com/watch?v=K2VljzCC16g" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-clamshells" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Clamshells</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Feet together. Rotate from hip. Feel side of glute.</p><a href="https://www.youtube.com/watch?v=cjk9kSZPneA" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-leg-raise" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Side-Lying Leg Raise</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Slight forward angle. Lead with heel. Hips stacked.</p><a href="https://www.youtube.com/watch?v=jgh6sGwtTwk" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-band-walks" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Lateral Band Walks</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Stay low in squat. Keep tension. Don't let knees cave.</p><a href="https://www.youtube.com/watch?v=nJVKhnJEOsw" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-chin-tuck" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Chin Tuck</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Make double chin. Push head straight back. Hold.</p><a href="https://www.youtube.com/watch?v=wQylqaCl8Zo" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-prone-w" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Prone W's / I-T-W</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Very light weight. Focus on <strong>LOWER trap squeeze</strong>. Skip if traps sore.</p><a href="https://www.youtube.com/watch?v=bIpPBgJwhYY" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-wall-slides" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Wall Slides</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Back and forearms flat on wall. Keep contact throughout.</p><a href="https://www.youtube.com/watch?v=ygJvzxMEsFA" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-heel-drops" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Eccentric Heel Drops</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Rise on both, lower on ONE. 3 seconds down.</p><a href="https://www.youtube.com/watch?v=Yzlf7U_iPjk" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-tibialis" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Tibialis Raises</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Back against wall. Lift toes up toward shins.</p><a href="https://www.youtube.com/watch?v=gNS_QjGAs_k" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-levator-stretch" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Levator Scap Stretch</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Ear to shoulder → nose toward armpit. Gentle.</p><a href="https://www.youtube.com/watch?v=XpMzpE27N8E" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-calf-stretch" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Slant Board Calf Stretch</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Straight knee for gastroc. Lean forward gently.</p><a href="https://www.youtube.com/watch?v=2xMgF1I71tw" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-foam-roll-it" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Foam Roll IT Band</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Side lying, hip to knee. 1 inch/sec. Pause on tender spots.</p><a href="https://www.youtube.com/watch?v=jFT3FRvmFok" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-seated-calf" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Seated Calf Raise</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Full stretch at bottom. 3 sec eccentric. Targets soleus.</p><a href="https://www.youtube.com/watch?v=Yh5TXz9-6Ao" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-standing-calf" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Standing Calf Raise</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Knees straight. Full range. Targets gastrocnemius.</p><a href="https://www.youtube.com/watch?v=gwLzBJYoWlI" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-frog-pumps" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Frog Pumps</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Soles together, knees out. Drive through heels. Squeeze glutes hard at top.</p><a href="https://www.youtube.com/watch?v=Zp26q4BY5HE" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-cable-kickback" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Cable Kickback</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Stand tall, don't lean. Keep leg straight. Squeeze glute.</p><a href="https://www.youtube.com/watch?v=bxBFmUhG8J4" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-leg-press" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Leg Press</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Feet shoulder width. Don't let back round at bottom. Don't lock knees.</p><a href="https://www.youtube.com/watch?v=IZxyjW7MPJQ" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-split-squat" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Split Squat</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Torso upright. Front knee over ankle. Weight in front heel.</p><a href="https://www.youtube.com/watch?v=pauHlPAKdFQ" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-lat-pulldown" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Lat Pulldown ⚠️</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>CRITICAL:</strong> <strong>DEPRESS shoulders first</strong>, then pull. NO shrugging. Neck stays relaxed. If traps engage, weight is too heavy.</p><a href="https://www.youtube.com/watch?v=CAwf7n6Luuc" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-cable-row" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Cable Row ⚠️</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>CRITICAL:</strong> <strong>RETRACT + DEPRESS</strong> shoulder blades. Pull to chest. NO neck tension. If traps engage, weight is too heavy.</p><a href="https://www.youtube.com/watch?v=GZbfZ033f74" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-ext-rotation" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Cable External Rotation</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Elbow pinned to side at 90°. Rotate forearm out. Light weight.</p><a href="https://www.youtube.com/watch?v=hcYqeOuymZY" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-face-pulls" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Face Pulls ⚠️</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>CRITICAL:</strong> Pull to face, rotate hands out. <strong>Squeeze LOWER traps, not upper.</strong> Elbows high.</p><a href="https://www.youtube.com/watch?v=eIq5CB9JfKE" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-ghd" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>GHD Back Extension</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Hinge at hips. Squeeze glutes at top. Don't hyperextend.</p><a href="https://www.youtube.com/watch?v=ph3pddpKzzw" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-glute-bridge" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Single-Leg Glute Bridge</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Keep hips level. Drive through heel. Squeeze at top.</p><a href="https://www.youtube.com/watch?v=AVAXhy6pl7o" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-leg-curl" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Prone Leg Curl</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Hips stay on pad. Curl all the way. Control descent.</p><a href="https://www.youtube.com/watch?v=ELOCsoDSmrg" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-bosu" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Bosu Balance</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Start with standing. Progress to squats. Eyes forward.</p><a href="https://www.youtube.com/watch?v=FRmSavRaeQY" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-goblet-squat" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Goblet Squat</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Hold DB at chest. Sit back and down. Knees track toes.</p><a href="https://www.youtube.com/watch?v=MeIiIdhvXT4" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-db-row" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>DB Row ⚠️</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Pull to hip. <strong>Don't shrug shoulder up. Neck stays neutral.</strong></p><a href="https://www.youtube.com/watch?v=pYcpY20QaE8" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-step-ups" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Step-Ups</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Drive through heel. Don't push off back foot. Control descent.</p><a href="https://www.youtube.com/watch?v=dQqApCGd5Ss" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-pushup" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Push-Up</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Body straight. Elbows 45°. Core tight.</p><a href="https://www.youtube.com/watch?v=IODxDxX7oi4" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+  <div class="tip-card" id="tip-single-leg-rdl" onclick="toggleTip(this)">
+    <div class="tip-header"><h4>Single-Leg RDL</h4><span class="tip-toggle">▼</span></div>
+    <div class="tip-content"><p><strong>Key:</strong> Hinge forward as back leg goes back. Hips square. Light weight.</p><a href="https://www.youtube.com/watch?v=59SIZc0iGSw" class="video-btn" target="_blank">Watch Video</a></div>
+  </div>
+</div>
+
+<!-- SUMMARY SECTION -->
+<div id="summary" class="section">
+  <h2 class="section-title">Week 2 Summary</h2>
+  <p class="section-subtitle">Apple Health data + subjective check-in</p>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Apple Health Data</span></div>
+    <div class="summary-grid">
+      <div class="summary-item"><div class="summary-label">Resting HR</div><input type="text" class="tracking-input" data-key="sum-resting-hr" placeholder="BPM"></div>
+      <div class="summary-item"><div class="summary-label">HRV Avg</div><input type="text" class="tracking-input" data-key="sum-hrv" placeholder="ms"></div>
+      <div class="summary-item"><div class="summary-label">VO2 Max</div><input type="text" class="tracking-input" data-key="sum-vo2" placeholder="—"></div>
+      <div class="summary-item"><div class="summary-label">FTP</div><input type="text" class="tracking-input" data-key="sum-ftp" value="136" placeholder="W"></div>
+      <div class="summary-item"><div class="summary-label">Avg Cycling Power</div><input type="text" class="tracking-input" data-key="sum-power" placeholder="W"></div>
+      <div class="summary-item"><div class="summary-label">Exercise Min</div><input type="text" class="tracking-input" data-key="sum-exercise" placeholder="min"></div>
+      <div class="summary-item"><div class="summary-label">Active Calories</div><input type="text" class="tracking-input" data-key="sum-cals" placeholder="kcal"></div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Subjective Check-In</span></div>
+    <div class="summary-grid">
+      <div class="summary-item"><div class="summary-label">Calf Feel (1-10)</div><input type="text" class="tracking-input" data-key="sum-calf" placeholder="—"></div>
+      <div class="summary-item"><div class="summary-label">Upper Trap (1-10)</div><input type="text" class="tracking-input" data-key="sum-trap" placeholder="—"></div>
+      <div class="summary-item"><div class="summary-label">Energy (1-10)</div><input type="text" class="tracking-input" data-key="sum-energy" placeholder="—"></div>
+      <div class="summary-item"><div class="summary-label">Sleep (1-10)</div><input type="text" class="tracking-input" data-key="sum-sleep" placeholder="—"></div>
+      <div class="summary-item"><div class="summary-label">Body Weight</div><input type="text" class="tracking-input" data-key="sum-weight" placeholder="lbs"></div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Notes for Week 3</span></div>
+    <textarea class="notes-area" data-key="sum-notes" placeholder="What worked? What to adjust?"></textarea>
+  </div>
+  
+  <div class="important danger"><strong>NO RUNNING THIS WEEK</strong><br>Focus on building calf strength first</div>
+</div>
+
+<div class="export-bar">
+  <button class="export-btn secondary" onclick="clearData()">Clear All</button>
+  <button class="export-btn primary" onclick="exportData()">Export Data</button>
+</div>
+
+<script>
+  // LocalStorage key
+  const STORAGE_KEY = 'week2_workout_data';
+  
+  // Load saved data on page load
+  window.onload = function() {
+    loadData();
+  };
+  
+  // Save data to localStorage
+  function saveData() {
+    const data = {};
+    // Save all inputs with data-key
+    document.querySelectorAll('[data-key]').forEach(el => {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        data[el.dataset.key] = el.value;
+      }
+    });
+    // Save checkboxes
+    document.querySelectorAll('.exercise-check').forEach((el, i) => {
+      data['check-' + i] = el.classList.contains('checked');
+    });
+    // Save selected options
+    document.querySelectorAll('.z2-option.selected').forEach((el, i) => {
+      data['z2-' + i] = el.textContent;
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    showSaveIndicator();
+  }
+  
+  // Load data from localStorage
+  function loadData() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+    const data = JSON.parse(saved);
+    // Restore inputs
+    document.querySelectorAll('[data-key]').forEach(el => {
+      if (data[el.dataset.key] !== undefined) {
+        el.value = data[el.dataset.key];
+        if (el.value) el.classList.add('saved');
+      }
+    });
+    // Restore checkboxes
+    document.querySelectorAll('.exercise-check').forEach((el, i) => {
+      if (data['check-' + i]) el.classList.add('checked');
+    });
+  }
+  
+  // Show save indicator
+  function showSaveIndicator() {
+    const ind = document.getElementById('saveIndicator');
+    ind.classList.add('show');
+    setTimeout(() => ind.classList.remove('show'), 1500);
+  }
+  
+  // Auto-save on input change
+  document.addEventListener('input', e => {
+    if (e.target.dataset.key || e.target.classList.contains('exercise-weight') || e.target.classList.contains('tracking-input') || e.target.classList.contains('notes-area')) {
+      e.target.classList.add('saved');
+      saveData();
+    }
+  });
+  
+  // Export data as JSON file
+  function exportData() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    const data = saved ? JSON.parse(saved) : {};
+    data.exportDate = new Date().toISOString();
+    data.week = 2;
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'week2_workout_data.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  
+  // Clear all data
+  function clearData() {
+    if (confirm('Clear all saved data? This cannot be undone.')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  }
+  
+  // Navigation
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  
+  // Toggle checkbox
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+    saveData();
+    event.stopPropagation();
+  }
+  
+  // Select Zone 2 option
+  function selectZ2(el, value) {
+    el.parentElement.querySelectorAll('.z2-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    saveData();
+  }
+  
+  // Toggle tip card
+  function toggleTip(el) {
+    el.classList.toggle('open');
+  }
+  
+  // Show specific tip
+  function showTip(id) {
+    event.preventDefault();
+    showSection('tips');
+    setTimeout(() => {
+      const tip = document.getElementById('tip-' + id);
+      if (tip) {
+        tip.classList.add('open');
+        tip.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+  }
+</script>
+
+</body>
+</html>
+
