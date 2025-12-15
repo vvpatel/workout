@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro Reset - 30 Seconds</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-card: #12121a;
+            --accent: #00d4aa;
+            --accent-dim: #00a888;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --active: #00d4aa;
+            --completed: #22c55e;
+            --pending: #333344;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background-image: 
+                radial-gradient(ellipse at top, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(0, 150, 136, 0.05) 0%, transparent 50%);
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .posture-alert {
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.15) 0%, rgba(255, 50, 50, 0.08) 100%);
+            border: 2px solid rgba(255, 100, 100, 0.4);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(255, 100, 100, 0.4); }
+            50% { border-color: rgba(255, 100, 100, 0.8); }
+        }
+        
+        .posture-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        
+        .posture-text {
+            font-size: 0.9rem;
+            color: #ffcccc;
+        }
+        
+        .posture-text strong {
+            color: #ff8888;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--bg-primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--accent) 0%, #00ffcc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Progress dots */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--pending);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background: var(--active);
+            box-shadow: 0 0 15px var(--active);
+            transform: scale(1.2);
+        }
+        
+        .progress-dot.completed {
+            background: var(--completed);
+        }
+        
+        /* Current exercise - big and prominent */
+        .current-exercise {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 25px;
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 170, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 170, 0.4); }
+        }
+        
+        .exercise-number {
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .exercise-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .exercise-timer {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 15px;
+        }
+        
+        .exercise-cue {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .exercise-cue strong {
+            color: var(--accent);
+        }
+        
+        /* Upcoming exercises */
+        .upcoming {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .upcoming-item {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+        
+        .upcoming-item.next {
+            opacity: 0.8;
+            border-color: rgba(0, 212, 170, 0.3);
+        }
+        
+        .upcoming-item.done {
+            opacity: 0.4;
+            text-decoration: line-through;
+        }
+        
+        .upcoming-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .upcoming-time {
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+        
+        /* Complete state */
+        .complete-banner {
+            display: none;
+            background: linear-gradient(135deg, var(--completed), #16a34a);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            animation: slideUp 0.5s ease;
+        }
+        
+        .complete-banner.show {
+            display: block;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .complete-banner h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .complete-banner p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Start button */
+        .start-btn {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 20px;
+        }
+        
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 212, 170, 0.5);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="badge">⚡ Micro Reset</div>
+            <h1>30-Second Reset</h1>
+        </div>
+        
+        <div class="progress-dots" id="progressDots">
+            <div class="progress-dot" data-step="0"></div>
+            <div class="progress-dot" data-step="1"></div>
+            <div class="progress-dot" data-step="2"></div>
+            <div class="progress-dot" data-step="3"></div>
+            <div class="progress-dot" data-step="4"></div>
+        </div>
+        
+        <div class="current-exercise" id="currentExercise">
+            <div class="exercise-number" id="exerciseNumber">Step 1 of 5</div>
+            <div class="exercise-name" id="exerciseName">Eye Refocus</div>
+            <div class="exercise-timer" id="exerciseTimer">0:05</div>
+            <div class="exercise-cue" id="exerciseCue">
+                <strong>Look:</strong> Find the farthest point you can see (20+ feet). Let your eyes relax on it.
+            </div>
+        </div>
+        
+        <div class="complete-banner" id="completeBanner">
+            <h2>✨ Reset Complete!</h2>
+            <p>Great job! Back to work with better posture.</p>
+            <button class="start-btn" style="margin-top: 15px;" onclick="repeatRoutine()">Repeat ↻</button>
+        </div>
+        
+        <div class="posture-alert">
+            <div class="posture-icon">👁️</div>
+            <div class="posture-text">
+                <strong>Screen Check:</strong> Eyes to CENTER of monitor, not lower-left!
+            </div>
+        </div>
+        
+        <div class="upcoming" id="upcomingList">
+            <div class="upcoming-item next" data-step="1">
+                <span class="upcoming-name">Posture Reset</span>
+                <span class="upcoming-time">3s</span>
+            </div>
+            <div class="upcoming-item" data-step="2">
+                <span class="upcoming-name">Chin Tucks</span>
+                <span class="upcoming-time">8s</span>
+            </div>
+            <div class="upcoming-item" data-step="3">
+                <span class="upcoming-name">Shoulder Rolls</span>
+                <span class="upcoming-time">7s</span>
+            </div>
+            <div class="upcoming-item" data-step="4">
+                <span class="upcoming-name">Physiological Sigh</span>
+                <span class="upcoming-time">7s</span>
+            </div>
+        </div>
+        
+        <button class="start-btn hidden" id="startBtn" onclick="startRoutine()">Start Reset</button>
+    </div>
+    
+    <script>
+        const exercises = [
+            {
+                name: "Eye Refocus",
+                duration: 5,
+                cue: "<strong>Look:</strong> Find the farthest point you can see (20+ feet). Let your eyes relax on it."
+            },
+            {
+                name: "Posture Reset",
+                duration: 3,
+                cue: "<strong>Check:</strong> Eyes center of screen → Chin tucked → Ears over shoulders → Shoulders DOWN → Hips back in chair"
+            },
+            {
+                name: "Chin Tucks",
+                duration: 8,
+                cue: "<strong>Do:</strong> Make a double chin, push head straight back. Hold 2 seconds, release. Repeat."
+            },
+            {
+                name: "Shoulder Rolls",
+                duration: 7,
+                cue: "<strong>Do:</strong> Big circles backward. Squeeze shoulder blades together at the back of each roll."
+            },
+            {
+                name: "Physiological Sigh",
+                duration: 7,
+                cue: "<strong>Breathe:</strong> Double inhale through nose (big breath + small sip) → Long slow exhale through mouth. Repeat 2-3x."
+            }
+        ];
+        
+        let currentStep = 0;
+        let timer = null;
+        let secondsLeft = 0;
+        let isRunning = false;
+        
+        function updateDisplay() {
+            const exercise = exercises[currentStep];
+            document.getElementById('exerciseNumber').textContent = `Step ${currentStep + 1} of ${exercises.length}`;
+            document.getElementById('exerciseName').textContent = exercise.name;
+            document.getElementById('exerciseCue').innerHTML = exercise.cue;
+            
+            // Update progress dots
+            document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+                dot.classList.remove('active', 'completed');
+                if (i < currentStep) dot.classList.add('completed');
+                if (i === currentStep) dot.classList.add('active');
+            });
+            
+            // Update upcoming list
+            document.querySelectorAll('.upcoming-item').forEach((item, i) => {
+                const stepIndex = parseInt(item.dataset.step);
+                item.classList.remove('next', 'done');
+                if (stepIndex < currentStep) item.classList.add('done');
+                if (stepIndex === currentStep + 1) item.classList.add('next');
+            });
+        }
+        
+        function updateTimer() {
+            const mins = Math.floor(secondsLeft / 60);
+            const secs = secondsLeft % 60;
+            document.getElementById('exerciseTimer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function startRoutine() {
+            document.getElementById('startBtn').classList.add('hidden');
+            isRunning = true;
+            currentStep = 0;
+            startExercise();
+        }
+        
+        function startExercise() {
+            if (currentStep >= exercises.length) {
+                completeRoutine();
+                return;
+            }
+            
+            const exercise = exercises[currentStep];
+            secondsLeft = exercise.duration;
+            updateDisplay();
+            updateTimer();
+            
+            timer = setInterval(() => {
+                secondsLeft--;
+                updateTimer();
+                
+                if (secondsLeft <= 0) {
+                    clearInterval(timer);
+                    currentStep++;
+                    setTimeout(startExercise, 500); // Brief pause between exercises
+                }
+            }, 1000);
+        }
+        
+        function completeRoutine() {
+            document.getElementById('currentExercise').classList.add('hidden');
+            document.getElementById('upcomingList').classList.add('hidden');
+            document.getElementById('completeBanner').classList.add('show');
+            
+            // Mark all dots as completed
+            document.querySelectorAll('.progress-dot').forEach(dot => {
+                dot.classList.remove('active');
+                dot.classList.add('completed');
+            });
+        }
+        
+        function repeatRoutine() {
+            document.getElementById('completeBanner').classList.remove('show');
+            document.getElementById('currentExercise').classList.remove('hidden');
+            document.getElementById('upcomingList').classList.remove('hidden');
+            document.querySelectorAll('.progress-dot').forEach(dot => {
+                dot.classList.remove('completed', 'active');
+            });
+            currentStep = 0;
+            startExercise();
+        }
+        
+        // Auto-start on page load
+        window.addEventListener('load', () => {
+            setTimeout(startRoutine, 500);
+        });
+    </script>
+</body>
+</html>

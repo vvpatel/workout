@@ -1,0 +1,19 @@
+{
+  "author": {
+    "name": "Vivek",
+    "email": "",
+    "url": ""
+  },
+  "credits": {
+    "name": "Work Break Protocol",
+    "url": "https://vvpatel.github.io/workout/"
+  },
+  "comments": "5-minute movement break: full neck/shoulder stretches, calf raises, and box breathing. Use every 50 minutes.",
+  "created": "2024-12-15",
+  "identifier": "Movement Break",
+  "modified": "2024-12-15",
+  "version": 1,
+  "name": "Movement Break",
+  "url": "https://vvpatel.github.io/workout/breaks/movement.html"
+}
+
