@@ -138,6 +138,9 @@
 
 **Notes:** _________________________________________________
 
+### Post-Workout
+- [ ] 🔥 **Sauna** (15-20 min) - See Sauna Protocol section
+
 ---
 
 ## WEDNESDAY - Strength B + Zone 2
@@ -271,6 +274,9 @@
 **Comparison to Tuesday:** ☐ Better ☐ Same ☐ Worse
 
 **Notes:** _________________________________________________
+
+### Post-Workout
+- [ ] 🔥 **Sauna** (15-20 min) - See Sauna Protocol section
 
 ---
 
