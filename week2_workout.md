@@ -324,6 +324,40 @@
 
 ---
 
+## SAUNA PROTOCOL (Post-VO2 Max Days)
+
+**When:** Tuesday & Friday, after VO2 Max workout
+**Duration:** 15-20 min (start at 10 min if new)
+**Temperature:** 160°F+ (as hot as comfortable)
+
+### Protocol
+1. Finish VO2 Max cool-down
+2. Hydrate: 8-16 oz water
+3. Sauna: 15-20 min
+4. Cool naturally (no cold plunge)
+5. Hydrate again: 16+ oz water
+
+### Why Post-Cardio
+- Core temp already elevated → faster HSP response
+- Won't interfere with muscle protein synthesis
+- Enhances cardiovascular adaptation
+
+### Tracking
+| Day | Duration | Temp (if shown) | Notes |
+|-----|----------|-----------------|-------|
+| Tue | _______ | _______ | |
+| Fri | _______ | _______ | |
+
+### Benefits (at 2x/week)
+- Heat Shock Protein activation (cellular cleanup)
+- Growth hormone release (up to 2-5x baseline)
+- Improved cardiovascular function
+- Reduced all-cause mortality (Finnish studies: 2-3x/week → 24% reduction)
+
+⚠️ **Hydrate well.** Skip if dehydrated, sick, or hungover.
+
+---
+
 ## WEEK 2 SUMMARY CHECK-IN
 
 | Metric | Value |

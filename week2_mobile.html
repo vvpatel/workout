@@ -104,6 +104,7 @@
   <button class="day-btn" onclick="showSection('fri')">Fri</button>
   <button class="day-btn" onclick="showSection('sat')">Sat</button>
   <button class="day-btn rest" onclick="showSection('sun')">Sun</button>
+  <button class="day-btn" onclick="showSection('sauna')" style="background: #b45309; color: #fef3c7;">🔥 Sauna</button>
   <button class="day-btn" onclick="showSection('tips')">Tips</button>
   <button class="day-btn" onclick="showSection('summary')">Summary</button>
 </nav>
@@ -413,6 +414,59 @@
   
   <p style="color: var(--text-muted); margin-top: 16px;">How does your body feel?</p>
   <textarea class="notes-area" data-key="sun-notes" placeholder="Energy, soreness, calf status, trap status..."></textarea>
+</div>
+
+<!-- SAUNA PROTOCOL -->
+<div id="sauna" class="section">
+  <h2 class="section-title">🔥 Sauna Protocol</h2>
+  <p class="section-subtitle">Post-VO2 Max Days (Tue & Fri)</p>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Protocol</span><span class="card-time">15-20 min</span></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">1. Finish VO2 Max cool-down</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">2. Hydrate</div><div class="exercise-details">8-16 oz water</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">3. Sauna</div><div class="exercise-details">15-20 min at 160°F+ (start 10 min if new)</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">4. Cool naturally</div><div class="exercise-details">No cold plunge (let heat effect build)</div></div></div>
+    <div class="exercise"><div class="exercise-check" onclick="toggleCheck(this)"></div><div class="exercise-info"><div class="exercise-name">5. Hydrate again</div><div class="exercise-details">16+ oz water</div></div></div>
+  </div>
+  
+  <div class="important" style="background: rgba(180, 83, 9, 0.15); border-color: #b45309;">
+    <strong>Why Post-Cardio:</strong> Core temp already elevated → faster HSP response. Won't interfere with muscle protein synthesis.
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Weekly Tracking</span></div>
+    <div class="tracking" style="grid-template-columns: 1fr 1fr;">
+      <div class="tracking-item">
+        <div class="tracking-label">Tuesday Duration</div>
+        <input type="text" class="tracking-input" data-key="sauna-tue-duration" placeholder="__ min">
+      </div>
+      <div class="tracking-item">
+        <div class="tracking-label">Tuesday Temp</div>
+        <input type="text" class="tracking-input" data-key="sauna-tue-temp" placeholder="__°F">
+      </div>
+      <div class="tracking-item">
+        <div class="tracking-label">Friday Duration</div>
+        <input type="text" class="tracking-input" data-key="sauna-fri-duration" placeholder="__ min">
+      </div>
+      <div class="tracking-item">
+        <div class="tracking-label">Friday Temp</div>
+        <input type="text" class="tracking-input" data-key="sauna-fri-temp" placeholder="__°F">
+      </div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header"><span class="card-title">Benefits (at 2x/week)</span></div>
+    <div style="font-size: 14px; color: var(--text-muted);">
+      <p style="margin-bottom: 8px;">• <strong style="color: var(--text);">Heat Shock Proteins</strong> - cellular cleanup & repair</p>
+      <p style="margin-bottom: 8px;">• <strong style="color: var(--text);">Growth Hormone</strong> - up to 2-5x baseline</p>
+      <p style="margin-bottom: 8px;">• <strong style="color: var(--text);">Cardiovascular</strong> - improved function</p>
+      <p>• <strong style="color: var(--text);">Longevity</strong> - Finnish studies: 2-3x/week → 24% reduced mortality</p>
+    </div>
+  </div>
+  
+  <div class="important danger">⚠️ <strong>Hydrate well.</strong> Skip if dehydrated, sick, or hungover.</div>
 </div>
 
 <!-- TIPS SECTION -->
