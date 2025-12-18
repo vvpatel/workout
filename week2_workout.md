@@ -58,10 +58,14 @@
 ## MONDAY - Strength A + Zone 2
 **Duration:** 60 min strength + 30 min Zone 2 | **Location:** Gym
 
-### Warm-Up (8 min)
-- [ ] 5 min assault bike (easy)
-- [ ] Dynamic stretches, leg swings
-- [ ] Banded Clamshells: 10 R, 15 L (glute activation)
+### Warm-Up (10 min)
+
+| Phase | Time | Exercise | Cues |
+|-------|------|----------|------|
+| **Raise Temp** | 3 min | Stationary bike OR incline treadmill (10-15% grade) | Easy pace, HR ~100-110, hands light |
+| **Joint Mobility** | 3 min | Ankle circles (10 each way) → Hip circles (10 each way/leg) → Cat-cow (8 reps) → Shoulder circles + gentle neck rotations | No forcing, just movement |
+| **Dynamic Stretch** | 2 min | Leg swings front/back (10 each) → Leg swings side (10 each) → Arm swings/crosses (10 each) | Control the swing |
+| **Activation** | 2 min | Banded clamshells (10 R, 15 L) → Scapular squeezes (10 × 3 sec) | Shoulders DOWN on squeezes |
 
 ### Calf Circuit (10 min)
 | Exercise | Sets x Reps | Weight | Notes |
@@ -146,10 +150,14 @@
 ## WEDNESDAY - Strength B + Zone 2
 **Duration:** 60 min strength + 30 min Zone 2 | **Location:** Gym + Pool/Bike
 
-### Warm-Up (8 min)
-- [ ] 5 min assault bike (easy)
-- [ ] Hip circles, leg swings, ankle mobility
-- [ ] Banded Clamshells: 10 R, 15 L (glute activation)
+### Warm-Up (10 min)
+
+| Phase | Time | Exercise | Cues |
+|-------|------|----------|------|
+| **Raise Temp** | 3 min | Stationary bike OR incline treadmill (10-15% grade) | Easy pace, HR ~100-110, hands light |
+| **Joint Mobility** | 3 min | Ankle circles (10 each way) → Hip circles (10 each way/leg) → Cat-cow (8 reps) → Shoulder circles + gentle neck rotations | No forcing, just movement |
+| **Dynamic Stretch** | 2 min | Leg swings front/back (10 each) → Leg swings side (10 each) → Arm swings/crosses (10 each) | Control the swing |
+| **Activation** | 2 min | Banded clamshells (10 R, 15 L) → Scapular squeezes (10 × 3 sec) | Shoulders DOWN on squeezes |
 
 ### Calf Circuit (10 min)
 | Exercise | Sets x Reps | Weight | Notes |
@@ -205,10 +213,14 @@
 
 *Lighter day - focus on movement quality, stability, and areas needing extra work*
 
-### Warm-Up (8 min)
-- [ ] 5 min easy bike or rowing
-- [ ] Dynamic stretches
-- [ ] Banded Clamshells: 10 R, 15 L
+### Warm-Up (10 min)
+
+| Phase | Time | Exercise | Cues |
+|-------|------|----------|------|
+| **Raise Temp** | 3 min | Stationary bike OR incline treadmill (10-15% grade) | Easy pace, HR ~100-110, hands light |
+| **Joint Mobility** | 3 min | Ankle circles (10 each way) → Hip circles (10 each way/leg) → Cat-cow (8 reps) → Shoulder circles + gentle neck rotations | No forcing, just movement |
+| **Dynamic Stretch** | 2 min | Leg swings front/back (10 each) → Leg swings side (10 each) → Arm swings/crosses (10 each) | Control the swing |
+| **Activation** | 2 min | Banded clamshells (10 R, 15 L) → Scapular squeezes (10 × 3 sec) | Shoulders DOWN on squeezes |
 
 ### Calf Maintenance (8 min)
 | Exercise | Sets x Reps | Weight | Notes |
