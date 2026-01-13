@@ -2242,13 +2242,47 @@
 </div>
 
 <script>
-  // LocalStorage key
-  const STORAGE_KEY = 'week3_workout_data';
+  // Password protection
+  const PASSWORD = 'workout2024'; // Change this to your desired password
   
-  // Load saved data on page load
+  function checkPassword() {
+    const input = document.getElementById('passwordInput');
+    const error = document.getElementById('passwordError');
+    const overlay = document.getElementById('passwordOverlay');
+    
+    if (input.value === PASSWORD) {
+      overlay.classList.add('hidden');
+      // Save that password was entered (session only)
+      sessionStorage.setItem('week3_authenticated', 'true');
+    } else {
+      error.textContent = 'Incorrect password';
+      input.value = '';
+      input.focus();
+    }
+  }
+  
+  // Check if already authenticated this session
   window.onload = function() {
+    if (sessionStorage.getItem('week3_authenticated') !== 'true') {
+      document.getElementById('passwordOverlay').classList.remove('hidden');
+      document.getElementById('passwordInput').focus();
+      
+      // Allow Enter key to submit
+      document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          checkPassword();
+        }
+      });
+    } else {
+      document.getElementById('passwordOverlay').classList.add('hidden');
+    }
+    
+    // Load saved data
     loadData();
   };
+  
+  // LocalStorage key
+  const STORAGE_KEY = 'week3_workout_data';
   
   // Save data to localStorage
   function saveData() {
