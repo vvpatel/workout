@@ -556,9 +556,70 @@
       cursor: pointer;
       user-select: none;
     }
+    /* Password protection */
+    .password-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+    
+    .password-overlay.hidden {
+      display: none;
+    }
+    
+    .password-box {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    
+    .password-box h2 {
+      margin-bottom: 20px;
+      color: var(--accent-light);
+    }
+    
+    .password-input {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 16px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    
+    .password-error {
+      color: #ef4444;
+      font-size: 14px;
+      margin-top: 8px;
+      min-height: 20px;
+    }
   </style>
 </head>
 <body>
+
+<div class="password-overlay" id="passwordOverlay">
+  <div class="password-box">
+    <h2>Week 3 Workout</h2>
+    <input type="password" class="password-input" id="passwordInput" placeholder="Enter password" autocomplete="off">
+    <button class="export-btn primary" onclick="checkPassword()" style="width: 100%; margin-top: 8px;">Enter</button>
+    <div class="password-error" id="passwordError"></div>
+  </div>
+</div>
 
 <div class="save-indicator" id="saveIndicator">✓ Saved</div>
 
