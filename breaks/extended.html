@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extended Reset - 10-15 Minutes</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Libre+Baskerville:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-card: #12121a;
+            --accent: #00d4aa;
+            --accent-bright: #00ffcc;
+            --accent-dim: #00a888;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --success: #22c55e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 40px 25px 25px 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-image: 
+                radial-gradient(ellipse at top, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(0, 150, 136, 0.05) 0%, transparent 50%);
+        }
+        
+        .posture-alert {
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.15) 0%, rgba(255, 50, 50, 0.08) 100%);
+            border: 2px solid rgba(255, 100, 100, 0.5);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(255, 100, 100, 0.5); }
+            50% { border-color: rgba(255, 100, 100, 1); }
+        }
+        
+        .posture-icon { font-size: 1.3rem; flex-shrink: 0; }
+        .posture-text { font-size: 0.85rem; color: #ffcccc; }
+        .posture-text strong { color: #ff8888; }
+        .posture-hint { font-size: 0.75rem; opacity: 0.8; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--bg-primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, var(--accent) 0%, #00ffcc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle { color: var(--text-secondary); font-size: 0.95rem; }
+        
+        /* Current exercise focus bar */
+        .focus-bar {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 212, 170, 0.2); }
+            50% { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 212, 170, 0.4); }
+        }
+        
+        .focus-timer {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+            width: 110px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .focus-content {
+            flex: 1;
+        }
+        
+        .focus-label {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        
+        .focus-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .focus-cue {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .focus-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .focus-btn {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .focus-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .focus-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        /* Sections */
+        .section {
+            margin-bottom: 18px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-color {
+            width: 4px;
+            height: 20px;
+            border-radius: 2px;
+            background: var(--accent);
+        }
+        
+        .section-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            flex: 1;
+        }
+        
+        .section-time {
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: rgba(0, 212, 170, 0.15);
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        
+        .exercise-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 8px;
+        }
+        
+        .exercise-item {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .exercise-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .exercise-item.active {
+            border-color: var(--accent);
+            background: rgba(0, 212, 170, 0.1);
+            box-shadow: 0 0 15px rgba(0, 212, 170, 0.2);
+        }
+        
+        .exercise-item.completed {
+            opacity: 0.5;
+        }
+        
+        .exercise-item.completed .check-box {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        .check-box {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: transparent;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .exercise-content { flex: 1; min-width: 0; }
+        .exercise-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 2px; }
+        .exercise-cue {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .exercise-reps {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .completion-banner {
+            display: none;
+            background: linear-gradient(135deg, var(--success), #16a34a);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .completion-banner.show { display: block; animation: slideUp 0.3s ease; }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .completion-banner h2 { font-size: 1.3rem; margin-bottom: 5px; }
+        .completion-banner p { opacity: 0.9; font-size: 0.9rem; }
+        
+        .hidden { display: none !important; }
+        
+        .quote-banner {
+            text-align: center;
+            font-family: 'Libre Baskerville', Georgia, serif;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="quote-banner" id="quoteBanner"></div>
+    
+    <div class="header">
+        <div class="badge">🔥 Extended Reset</div>
+        <h1>Full Recovery</h1>
+        <p class="subtitle">10-15 min complete routine</p>
+    </div>
+    
+    <div class="focus-bar" id="focusBar">
+        <div class="focus-timer" id="focusTimer">0:00</div>
+        <div class="focus-content">
+            <div class="focus-label" id="focusLabel">Ready to start</div>
+            <div class="focus-name" id="focusName">Click Start to begin</div>
+            <div class="focus-cue" id="focusCue">All exercises visible below</div>
+        </div>
+        <div class="focus-controls">
+            <button class="focus-btn hidden" id="startBtn" onclick="startRoutine()">Start</button>
+            <button class="focus-btn secondary" id="skipBtn" onclick="skipExercise()">Skip →</button>
+        </div>
+    </div>
+    
+    <div class="section" data-section="neck">
+        <div class="section-header">
+            <div class="section-color"></div>
+            <span class="section-title">Neck Sequence</span>
+            <span class="section-time">3 min</span>
+        </div>
+        <div class="exercise-list">
+            <div class="exercise-item" data-id="0" data-duration="50" data-cue="Deep neck flexor strengthening - hold each rep 5 seconds">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Chin Tucks</div>
+                    <div class="exercise-cue">Deep neck flexor strengthening</div>
+                </div>
+                <div class="exercise-reps">10 × 5s</div>
+            </div>
+            <div class="exercise-item" data-id="1" data-duration="20" data-cue="Slow rotations, pause at end range each side">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Neck Rotations</div>
+                    <div class="exercise-cue">Slow, pause at end range</div>
+                </div>
+                <div class="exercise-reps">5 each</div>
+            </div>
+            <div class="exercise-item" data-id="2" data-duration="90" data-cue="Ear toward armpit, gentle pressure, breathe into the stretch">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Levator Scap Stretch</div>
+                    <div class="exercise-cue">Breathe into the stretch</div>
+                </div>
+                <div class="exercise-reps">45s each</div>
+            </div>
+            <div class="exercise-item" data-id="3" data-duration="90" data-cue="Anchor shoulder DOWN first, don't force the stretch">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Upper Trap Stretch</div>
+                    <div class="exercise-cue">Don't force, anchor shoulder</div>
+                </div>
+                <div class="exercise-reps">45s each</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section" data-section="shoulder">
+        <div class="section-header">
+            <div class="section-color"></div>
+            <span class="section-title">Shoulders & Upper Back</span>
+            <span class="section-time">3 min</span>
+        </div>
+        <div class="exercise-list">
+            <div class="exercise-item" data-id="4" data-duration="30" data-cue="Exaggerate the movement, squeeze blades at back">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Shoulder Rolls</div>
+                    <div class="exercise-cue">Exaggerate the movement</div>
+                </div>
+                <div class="exercise-reps">15 reps</div>
+            </div>
+            <div class="exercise-item" data-id="5" data-duration="45" data-cue="Pinch and hold, feel lower traps engage">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Scapular Squeezes</div>
+                    <div class="exercise-cue">Feel lower traps engage</div>
+                </div>
+                <div class="exercise-reps">15 × 3s</div>
+            </div>
+            <div class="exercise-item" data-id="6" data-duration="50" data-cue="Hands behind head, arch upper back over chair">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Thoracic Extension</div>
+                    <div class="exercise-cue">Hands behind head, arch over chair</div>
+                </div>
+                <div class="exercise-reps">10 × 5s</div>
+            </div>
+            <div class="exercise-item" data-id="7" data-duration="90" data-cue="Go deeper this time, feel chest open">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Doorway Chest Stretch</div>
+                    <div class="exercise-cue">Go deeper this time</div>
+                </div>
+                <div class="exercise-reps">45s each</div>
+            </div>
+            <div class="exercise-item" data-id="8" data-duration="40" data-cue="Inhale arch, exhale round - breathe with movement">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Seated Cat-Cow</div>
+                    <div class="exercise-cue">Breathe with movement</div>
+                </div>
+                <div class="exercise-reps">10 cycles</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section" data-section="calves">
+        <div class="section-header">
+            <div class="section-color"></div>
+            <span class="section-title">Calves & Lower Body</span>
+            <span class="section-time">2 min</span>
+        </div>
+        <div class="exercise-list">
+            <div class="exercise-item" data-id="9" data-duration="60" data-cue="Slow 3-second eccentric (lowering phase)">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Standing Calf Raises</div>
+                    <div class="exercise-cue">Slow 3s eccentric</div>
+                </div>
+                <div class="exercise-reps">2 × 15</div>
+            </div>
+            <div class="exercise-item" data-id="10" data-duration="90" data-cue="Straight back leg, heel stays down">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Wall Calf Stretch</div>
+                    <div class="exercise-cue">Straight back leg, heel down</div>
+                </div>
+                <div class="exercise-reps">45s each</div>
+            </div>
+            <div class="exercise-item" data-id="11" data-duration="30" data-cue="Full range of motion both directions">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Ankle Circles</div>
+                    <div class="exercise-cue">Full range of motion</div>
+                </div>
+                <div class="exercise-reps">10 each</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section" data-section="wrist">
+        <div class="section-header">
+            <div class="section-color"></div>
+            <span class="section-title">Wrists & Forearms</span>
+            <span class="section-time">1 min</span>
+        </div>
+        <div class="exercise-list">
+            <div class="exercise-item" data-id="12" data-duration="40" data-cue="Arm straight, pull fingers back gently">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Wrist Extension Stretch</div>
+                    <div class="exercise-cue">Arm straight, pull fingers back</div>
+                </div>
+                <div class="exercise-reps">20s each</div>
+            </div>
+            <div class="exercise-item" data-id="13" data-duration="40" data-cue="Arm straight, pull fingers down gently">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Wrist Flexion Stretch</div>
+                    <div class="exercise-cue">Arm straight, pull fingers down</div>
+                </div>
+                <div class="exercise-reps">20s each</div>
+            </div>
+            <div class="exercise-item" data-id="14" data-duration="20" data-cue="Spread fingers wide, then make tight fist">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Finger Spreads</div>
+                    <div class="exercise-cue">Spread wide, make fist</div>
+                </div>
+                <div class="exercise-reps">10 cycles</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section" data-section="breathing">
+        <div class="section-header">
+            <div class="section-color"></div>
+            <span class="section-title">Breathing & Relaxation</span>
+            <span class="section-time">3 min</span>
+        </div>
+        <div class="exercise-list">
+            <div class="exercise-item" data-id="15" data-duration="80" data-cue="4 seconds in → 7 seconds hold → 8 seconds out">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">4-7-8 Breathing</div>
+                    <div class="exercise-cue">4 in → 7 hold → 8 out</div>
+                </div>
+                <div class="exercise-reps">4 cycles</div>
+            </div>
+            <div class="exercise-item" data-id="16" data-duration="45" data-cue="Inhale deeply, then hum 'mmm' on exhale - feel vibration in chest/throat">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Humming Exhale</div>
+                    <div class="exercise-cue">Hum on exhale, vibrate vagus nerve</div>
+                </div>
+                <div class="exercise-reps">5-6 breaths</div>
+            </div>
+            <div class="exercise-item" data-id="17" data-duration="60" data-cue="Scan from head to toe, notice and release tension">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">Body Scan</div>
+                    <div class="exercise-cue">Notice and release tension</div>
+                </div>
+                <div class="exercise-reps">1 min</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section" data-section="walk">
+        <div class="section-header">
+            <div class="section-color"></div>
+            <span class="section-title">Movement</span>
+            <span class="section-time">3-5 min</span>
+        </div>
+        <div class="exercise-list">
+            <div class="exercise-item" data-id="18" data-duration="180" data-cue="Get water, splash cold water on wrists/face, look out window, take stairs">
+                <div class="check-box">✓</div>
+                <div class="exercise-content">
+                    <div class="exercise-name">🚶 Walk Away from Desk</div>
+                    <div class="exercise-cue">Get water, cold water on wrists, look far away</div>
+                </div>
+                <div class="exercise-reps">3-5 min</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="completion-banner" id="completion">
+        <h2>✨ Reset Complete!</h2>
+        <p>Great job taking care of your body. See you in 2 hours.</p>
+    </div>
+    
+    <div class="posture-alert">
+        <div class="posture-icon">👁️</div>
+        <div class="posture-text">
+            <strong>Screen Check:</strong> Eyes to CENTER of monitor, not lower-left!
+        </div>
+    </div>
+    
+    <script>
+        let currentExercise = -1;
+        let timer = null;
+        let secondsLeft = 0;
+        let isRunning = false;
+        const exercises = document.querySelectorAll('.exercise-item');
+        
+        function updateFocusBar() {
+            if (currentExercise < 0 || currentExercise >= exercises.length) return;
+            
+            const item = exercises[currentExercise];
+            const name = item.querySelector('.exercise-name').textContent;
+            const cue = item.dataset.cue;
+            const reps = item.querySelector('.exercise-reps').textContent;
+            
+            document.getElementById('focusLabel').textContent = `Exercise ${currentExercise + 1} of ${exercises.length}`;
+            document.getElementById('focusName').textContent = name;
+            document.getElementById('focusCue').textContent = cue;
+        }
+        
+        function updateTimer() {
+            const mins = Math.floor(secondsLeft / 60);
+            const secs = secondsLeft % 60;
+            document.getElementById('focusTimer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function highlightCurrent() {
+            exercises.forEach((item, i) => {
+                item.classList.remove('active');
+                if (i === currentExercise) {
+                    item.classList.add('active');
+                    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        }
+        
+        function startRoutine() {
+            document.getElementById('startBtn').classList.add('hidden');
+            document.getElementById('skipBtn').classList.remove('hidden');
+            isRunning = true;
+            currentExercise = 0;
+            startExercise();
+        }
+        
+        function startExercise() {
+            if (currentExercise >= exercises.length) {
+                completeRoutine();
+                return;
+            }
+            
+            const item = exercises[currentExercise];
+            secondsLeft = parseInt(item.dataset.duration);
+            
+            updateFocusBar();
+            updateTimer();
+            highlightCurrent();
+            
+            timer = setInterval(() => {
+                secondsLeft--;
+                updateTimer();
+                
+                if (secondsLeft <= 0) {
+                    clearInterval(timer);
+                    markComplete();
+                    currentExercise++;
+                    setTimeout(startExercise, 300);
+                }
+            }, 1000);
+        }
+        
+        function skipExercise() {
+            clearInterval(timer);
+            markComplete();
+            currentExercise++;
+            startExercise();
+        }
+        
+        function markComplete() {
+            if (currentExercise >= 0 && currentExercise < exercises.length) {
+                exercises[currentExercise].classList.add('completed');
+            }
+        }
+        
+        function completeRoutine() {
+            document.getElementById('focusBar').classList.add('hidden');
+            document.getElementById('completion').classList.add('show');
+            exercises.forEach(item => item.classList.remove('active'));
+        }
+        
+        // Allow manual toggle
+        exercises.forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('completed');
+            });
+        });
+        
+        const quotes = [
+            "We suffer more from imagination than from reality. — Seneca",
+            "We are what we think, having become what we thought.",
+            "The quality of your life will be determined by the amount of uncertainty you can comfortably deal with.",
+            "Ring the bells that still can ring, forget your perfect offering. There is a crack in everything—that's how the light gets in. — Leonard Cohen",
+            "Courage is not acting in the absence of fear, it's taking action in the face of fear.",
+            "He who has a why to live for can bear almost any how. — Nietzsche",
+            "To meet triumph and disaster and to treat those two imposters the same. — Kipling",
+            "The best thing and the worst thing are the same thing.",
+            "Joy and woe are woven fine. — William Blake",
+            "Inspiration is perishable—act on it immediately. — Naval",
+            "Be so good they can't ignore you. — Steve Martin",
+            "Screw it, let's do it. — Branson",
+            "You miss 100% of the shots you don't take. — Gretzky",
+            "Do, fail, learn.",
+            "Either write something worth reading or do something worth writing. — Franklin",
+            "Everything you want is on the other side of fear.",
+            "What we do when people aren't looking is an indicator of who we are.",
+            "Wisdom is understanding the long-term consequences of your actions.",
+            "Tactics without strategy is the noise before defeat. — Sun Tzu",
+            "A problem well stated is a problem half solved. — Kettering",
+            "Curiosity is more important than knowledge. — Einstein",
+            "Insight comes from looking at what's been on the table all along. — McCullough",
+            "Excellence is the capacity to take pain. — Isadore Sharp",
+            "Your blessing in life is when you find the torture you're comfortable with. — Seinfeld",
+            "If you've got a good work ethic, it needs to be matched with a good rest ethic.",
+            "Success is stumbling from failure to failure with no loss of enthusiasm. — Churchill",
+            "You have to throw out the good stuff to get the best stuff.",
+            "Imposter syndrome is proof that you are taking on new challenges.",
+            "If it makes you happy, it's not a waste of time.",
+            "For me, success is not a public thing. It's when you have fewer and fewer regrets. — Toni Morrison",
+            "The soul becomes dyed with the color of its thoughts. — Marcus Aurelius",
+            "Stay hungry, stay foolish. — Jobs",
+            "Design is not just what it looks like. Design is how it works. — Jobs",
+            "Simple can be harder than complex. You have to work hard to make your thinking clean. — Jobs",
+            "Your time is limited. Don't waste it living someone else's life. — Jobs",
+            "The people who are crazy enough to think they can change the world are the ones who do. — Jobs",
+            "Play long-term games with long-term people. — Naval",
+            "Specific knowledge is found by pursuing your genuine curiosity. — Naval",
+            "Desire is a contract you make with yourself to be unhappy until you get what you want. — Naval",
+            "I'm not lazy, I'm on energy-saving mode.",
+            "The elevator to success is broken. Take the stairs.",
+            "I haven't failed. I've just found 10,000 ways that won't work. — Edison",
+            "The trouble with doing nothing is you never know when you're finished. — Groucho Marx",
+            "If at first you don't succeed, redefine success.",
+            "Almost everything will work again if you unplug it for a few minutes—including you. — Anne Lamott",
+            "The time to relax is when you don't have time for it. — Sydney Harris",
+            "Tension is who you think you should be. Relaxation is who you are. — Chinese Proverb",
+            "The greatest weapon against stress is our ability to choose one thought over another. — William James"
+        ];
+        
+        // Display random quote
+        document.getElementById('quoteBanner').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+        
+        // Auto-start on page load
+        window.addEventListener('load', () => {
+            setTimeout(startRoutine, 500);
+        });
+    </script>
+</body>
+</html>
