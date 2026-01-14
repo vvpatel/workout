@@ -2,13 +2,111 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=week3/week3_mobile.html">
-  <title>Week 3 Workout</title>
-  <script>
-    window.location.href = "week3/week3_mobile.html";
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workout Programs</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #3b82f6;
+      margin-bottom: 30px;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .section h2 {
+      color: #60a5fa;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 10px;
+    }
+    .week-card, .break-card {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #334155;
+    }
+    .week-card h3, .break-card h3 {
+      margin-top: 0;
+      color: #60a5fa;
+    }
+    .links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    a {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #3b82f6;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    a:hover {
+      background: #2563eb;
+    }
+    a.secondary {
+      background: #334155;
+    }
+    a.secondary:hover {
+      background: #475569;
+    }
+  </style>
 </head>
 <body>
-  <p>Redirecting to <a href="week3/week3_mobile.html">Week 3 Workout</a>...</p>
+  <h1>Workout Programs</h1>
+  
+  <div class="section">
+    <h2>Workout Weeks</h2>
+    
+    <div class="week-card">
+      <h3>Week 1</h3>
+      <div class="links">
+        <a href="week1/week1_mobile.html">Mobile View</a>
+        <a href="week1/week1_workout.html" class="secondary">Print View</a>
+      </div>
+    </div>
+    
+    <div class="week-card">
+      <h3>Week 2</h3>
+      <div class="links">
+        <a href="week2/week2_mobile.html">Mobile View</a>
+      </div>
+    </div>
+    
+    <div class="week-card">
+      <h3>Week 3: Neural Re-Education</h3>
+      <p style="color: #94a3b8; margin-bottom: 12px;">Phase 1 (Weeks 3-6) • Build leg strength • Neural re-education</p>
+      <div class="links">
+        <a href="week3/week3_mobile.html">Mobile View</a>
+        <a href="week3/week3_workout.html" class="secondary">Print View</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>Work Breaks</h2>
+    
+    <div class="break-card">
+      <h3>Movement Breaks</h3>
+      <div class="links">
+        <a href="breaks/extended.html">Extended Reset</a>
+        <a href="breaks/micro.html">Micro Reset</a>
+        <a href="breaks/movement.html">Movement Break</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
